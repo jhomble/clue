@@ -36,7 +36,7 @@ export class ActionService {
                 return [_.HALL_E, _.HALL_G, _.HALL_J]
             case _.CONSERVATORY:
                 return [_.HALL_H, _.HALL_K, _.LOUNGE]
-            case _.BALL_ROOM:
+            case _.BALLROOM:
                 return [_.HALL_I, _.HALL_K, _.HALL_L]
             case _.KITCHEN:
                 return [_.HALL_J, _.HALL_L, _.STUDY]
@@ -57,13 +57,13 @@ export class ActionService {
             case _.HALL_H:
                 return [_.LIBRARY, _.CONSERVATORY]
             case _.HALL_I:
-                return [_.BILLIARD, _.BALL_ROOM]
+                return [_.BILLIARD, _.BALLROOM]
             case _.HALL_J:
                 return [_.DINING, _.KITCHEN]
             case _.HALL_K:
-                return [_.CONSERVATORY, _.BALL_ROOM]
+                return [_.CONSERVATORY, _.BALLROOM]
             case _.HALL_L:
-                return [_.BALL_ROOM, _.KITCHEN]
+                return [_.BALLROOM, _.KITCHEN]
             default: 
                 console.log("Awk Broken");
         }
