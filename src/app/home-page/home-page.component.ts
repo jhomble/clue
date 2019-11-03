@@ -191,7 +191,7 @@ export class HomePageComponent {
         case _.LIBRARY:
           this.nameLibrary = player.character
           break;
-        case _.BILLARD:
+        case _.BILLIARD:
           this.nameBilliard = player.character
           break;
         case _.DINING:
@@ -200,7 +200,7 @@ export class HomePageComponent {
         case _.CONSERVATORY:
           this.nameConservatory = player.character
           break;
-        case _.BALL_ROOM:
+        case _.BALLROOM:
           this.nameBallRoom = player.character
           break;
         case _.KITCHEN:
