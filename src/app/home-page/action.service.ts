@@ -47,7 +47,7 @@ export class ActionService {
             case _.HALL_C:
                 return [_.STUDY, _.LIBRARY]
             case _.HALL_D:
-                return [_.HALL, _.BILLARD]
+                return [_.HALL, _.BILLIARD]
             case _.HALL_E:
                 return [_.LOUNGE, _.DINING]
             case _.HALL_F:
