@@ -51,13 +51,13 @@ export class ActionService {
             case _.HALL_E:
                 return [_.LOUNGE, _.DINING]
             case _.HALL_F:
-                return [_.LIBRARY, _.BILLARD]
+                return [_.LIBRARY, _.BILLIARD]
             case _.HALL_G:
-                return [_.BILLARD, _.DINING]
+                return [_.BILLIARD, _.DINING]
             case _.HALL_H:
                 return [_.LIBRARY, _.CONSERVATORY]
             case _.HALL_I:
-                return [_.BILLARD, _.BALL_ROOM]
+                return [_.BILLIARD, _.BALL_ROOM]
             case _.HALL_J:
                 return [_.DINING, _.KITCHEN]
             case _.HALL_K:
