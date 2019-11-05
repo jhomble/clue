@@ -41,6 +41,7 @@ export class GameService {
         if (playersToPlay === 1) {
             full = true
         }
+
         this.db.collection('games').doc(name).set({
             title: name, 
             full, 
@@ -120,6 +121,8 @@ export class GameService {
             //alert(`${game.title} has been closed`)
         })
     }
+
+	
 
     dispose() {
         this.subscription.unsubscribe();
