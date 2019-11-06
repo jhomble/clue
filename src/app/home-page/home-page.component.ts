@@ -9,11 +9,11 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import * as _ from './constants';
 
-@Component({
-  selector: 'app-home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.scss']
-})
+	@Component({
+	  selector: 'app-home-page',
+	  templateUrl: './home-page.component.html',
+	  styleUrls: ['./home-page.component.scss']
+	})
 export class HomePageComponent {
   message = "";
   gameTitle = "";
@@ -227,7 +227,7 @@ export class HomePageComponent {
   }
 
   isInRoom() { 
-	return true; 
+			return true; 
   }
 
   setPlayerLocations() {
