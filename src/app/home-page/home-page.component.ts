@@ -113,74 +113,79 @@ export class HomePageComponent {
     this.gameService.createGame(this.gameTitle)
   }
 
+  isInRoom() {
+	return true; 
+  }
+
+
   makeAccusation() { 
 	
-		var a = document.getElementById('makeAccuse'); 
-		var c = document.getElementById('character') as HTMLSelectElement; 
-		var cSel = c.selectedIndex; 
-		var cOpt = c.options[cSel]; 
-		var cVal = (<HTMLOptionElement>cOpt).value; 
-		var cText = (<HTMLOptionElement>cOpt).text;
-		var r = document.getElementById('room') as HTMLSelectElement; 
-		var rSel = r.selectedIndex; 
-		var rOpt = r.options[rSel]; 
-		var rVal = (<HTMLOptionElement>rOpt).value; 
-		var rText = (<HTMLOptionElement>rOpt).text;
-		var w = document.getElementById('weapon') as HTMLSelectElement; 
-		var wSel = w.selectedIndex; 
-		var wOpt = w.options[wSel]; 
-		var wVal = (<HTMLOptionElement>wOpt).value; 
-		var wText = (<HTMLOptionElement>wOpt).text;
+	var a = document.getElementById('makeAccuse'); 
+	var c = document.getElementById('character') as HTMLSelectElement; 
+	var cSel = c.selectedIndex; 
+	var cOpt = c.options[cSel]; 
+	var cVal = (<HTMLOptionElement>cOpt).value; 
+	var cText = (<HTMLOptionElement>cOpt).text;
+	var r = document.getElementById('room') as HTMLSelectElement; 
+	var rSel = r.selectedIndex; 
+	var rOpt = r.options[rSel]; 
+	var rVal = (<HTMLOptionElement>rOpt).value; 
+	var rText = (<HTMLOptionElement>rOpt).text;
+	var w = document.getElementById('weapon') as HTMLSelectElement; 
+	var wSel = w.selectedIndex; 
+	var wOpt = w.options[wSel]; 
+	var wVal = (<HTMLOptionElement>wOpt).value; 
+	var wText = (<HTMLOptionElement>wOpt).text;
 		
-		// TODO 
-		// murderer 
-		var mChar = _.COLONEL_MUSTARD; 
-		var mRoom = _.BALLROOM; 
-		var mWeapon = _.ROPE; 
-		// current character 
-		var currChar = this.user; //currentPlayer; 
+	// TODO 
+	// murderer 
+	var mChar = _.COLONEL_MUSTARD; 
+	var mRoom = _.BALLROOM; 
+	var mWeapon = _.ROPE; 
+	// current character 
+	var currChar = this.user; //currentPlayer; 
 		
-		// check if all List Boxes are filled in 
-		if(cVal == "None"|| rVal == "None"|| wVal == "None") { 
-			this.banner = 'Please fill in all 3 List Boxes'
-			
-		} else { 
-			if (this.currentlyInGame) {
+	// check if all List Boxes are filled in 
+	if(cVal == "None"|| rVal == "None"|| wVal == "None") { 
+		this.banner = 'Please fill in all 3 List Boxes'
+		
+	} else { 
+		if (this.currentlyInGame) {
 		      if (this.isMyTurn()) {
 				if(this.isInRoom()) {	// TODO need to implement isInRoom() method  
-				
+					
 					// now we can compare if accusation is correct or not 
 					// compare accusation vs. real - if true accusation
 					if((cVal == mChar) && (rVal == mRoom) && (wVal == mWeapon)) { 
-						
+							
 						// used alert rather than banner bc it prevents message from disappearing due to closeGame() 
 						alert(currChar + ' has made a correct accusation of ' + mChar + ',' + mRoom + ',' + mWeapon + ' and has won the game!')
-						
+							
 						// end game 
 						this.closeGame(this.game); 
-						
+							
 					} else { // if wrong accusation
-						 
-						this.banner = currChar + ' has made a wrong accusation. Moving ' + cVal + ' to ' + rVal;  
+							 
+						this.banner = currChar + ' has made a wrong accusation. Moving ' + cVal + ' to ' + rVal 
 						// TODO: set player canMakeAccusation flag = false 
 						// TODO: set List Box back to index = 0; 
-	
+		
 						// TODO: move accused player to accused room 
 						//this.gameService.movePlayer(move, this.currentPlayer, this.game);
-		          		this.gameService.nextTurn(this.game);	
+			         	this.gameService.nextTurn(this.game);	
 					}
-					
+						
 				} else {
 					this.banner = 'Not in Room'
 				} 
-		      } else {
-		        this.banner = `Not your turn`
-		      }
-		    } else {
-		      this.banner = `Not in a game`
-		    }
+			  } else {
+		       	this.banner = `Not your turn`
+			      }
+			 } else {
+			      this.banner = `Not in a game`
+			 }
 		} 
-	}
+  }
 	
 	makeSuggestion() { 
 		
@@ -205,6 +210,10 @@ export class HomePageComponent {
     }
   }
 
+  initGame(){
+    this.gameService.initGame();
+  }
+
   joinGame(game) {
     this.afAuth.user.subscribe((user) => {
       this.user = user.email
@@ -224,10 +233,6 @@ export class HomePageComponent {
 
   isMyTurn() {
     return this.game.players[this.game.turn].name === this.user;
-  }
-
-  isInRoom() { 
-	return true; 
   }
 
   setPlayerLocations() {
@@ -268,18 +273,18 @@ export class HomePageComponent {
         case _.LIBRARY:
           this.nameLibrary = player.character
           break;
-        case _.BILLIARD:
-          this.nameBilliard = player.character
-          break;
+         case _.BILLIARD:
+           this.nameBilliard = player.character
+           break;
         case _.DINING:
           this.nameDining = player.character
           break;
         case _.CONSERVATORY:
           this.nameConservatory = player.character
           break;
-        case _.BALLROOM:
-          this.nameBallRoom = player.character
-          break;
+         case _.BALLROOM:
+           this.nameBallRoom = player.character
+           break;
         case _.KITCHEN:
           this.nameKitchen = player.character
           break;

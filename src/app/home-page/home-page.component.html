@@ -151,6 +151,7 @@
                             <h2>{{banner}}</h2>
 
 						<div *ngIf="currentlyInGame">
+						
                             <p>
 							Character:
 							<select id = "character">
@@ -189,9 +190,10 @@
 							</select>
                       
 							
-							<button (click)="makeAccusation()">Make Accusation</button>
+					<!--		<button (click)="makeAccusation()">Make Accusation</button> --> 
 							<!--<button id="makeSuggest" (click)="makeSuggestion()">Make Suggestion</button> --> 
 							</p>
+							
 							<p>
                             <button (click)="closeGame(game)">Close Game</button>
 							</p>
