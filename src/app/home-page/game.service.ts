@@ -46,52 +46,102 @@ export class GameService {
         if (playersToPlay === 1) {
             full = true
         }
+
         this.db.collection('games').doc(name).set({
             title: name,
-            full,
-            players: [
-                {
-                    name: this.user,
-                    location: _.STUDY, // TODO dont harcode
-                    character: _.MISS_SCARLET // TODO dont harcode
-                }],
-            turn: 0
+            full : full,
+            users : [],
+            players: [],
+            murderer : {
+                name : "",
+                weapon: "",
+            },
         })
     }
 
-    initGame() {
+    joinGame(game) {
+        console.log(game)
+        if (game.players.length >= playersToPlay) {
+            alert("Game is Full")
+        } else {
+            if (game.players.length >= (playersToPlay - 1)) {
+                
+                this.db.collection('games').doc(game.title).get()
+                .toPromise()
+                .then(doc => {
+                    const users = [];
 
-        console.log('Initiate Game')
-        //Retrieve current players from DB and add to players array
-        //const result = this.db.firestore.collection('games').doc(this.game.title).get();
-        const result = this.db.firestore.collection('games').doc('Test').get();
+                    for (let i = 0; i < doc.data().users.length; i++){
+                        console.log()
+                        users.push(doc.data().users[i])
+                    }
 
+                    //Push new user
+                    users.push(this.user)
+                    this.db.collection('games').doc(game.title).update({
+                        users : users
+                    })
+                    console.log(this.user + " added to game!")
+
+                    if (game.players.length + 1 >= playersToPlay)
+                    {
+                        this.assignPlayers(game);
+                    }
+                }).catch(console.log)
+
+                // this.db.collection('games').doc(game.title).set({
+                //     title: game.title,
+                //     full: true,
+                //     players: [...game.players, {
+                //         name: this.user,
+                //         location: _.STUDY, // TODO dont harcode
+                //         character: _.MISS_SCARLET // TODO dont harcode
+                //     }],
+                //     turn: 0
+                // })
+            } else {
+                // this.db.collection('games').doc(game.title).set({
+                //     title: game.title,
+                //     full: false,
+                //     players: [...game.players, {
+                //         name: this.user,
+                //         location: _.STUDY, // TODO dont harcode
+                //         character: _.MISS_SCARLET // TODO dont harcode
+                //     }],
+                //     turn: null
+                // })
+            }
+        }
+    }
+
+    assignPlayers(game) {
+
+        console.log("Assigning players and murderer...")
+        const result = this.db.firestore.collection('games').doc(game.title).get();
+        
         //Retrieve data from firestore
         result.then(doc => {
 
             //Variables
             let count = 0
             let arr = []
-            var users = []
-            this.game = []
+            let users = []
+            let players = []
 
-            // Instantiat game -> players list
-            this.game.players = []
 
-            //Add users to users list
+            // Add users to users list
             for (let i = 0; i < doc.data().users.length; i++){
+                console.log()
                 users.push(doc.data().users[i])
             }
 
-            //Create Random list of numbers between 0 and users.length
             while (arr.length < users.length) {
                 var r = Math.floor(Math.random() * users.length) + 1;
                 if (arr.indexOf(r) === -1) arr.push(r);
             }
 
-            //Create player objects
             users.forEach(user => {
-                this.game.players.push({
+                players.push({
                         name : user,
                         character: this.characters[arr[count]],
                         weapon: this.weapons[arr[count]],
@@ -101,57 +151,23 @@ export class GameService {
                 count++;
             })
 
-            //Select murderer at random
-            this.game.push({ murderer: this.game.players[Math.floor(Math.random() * this.game.length)] });
-			
-            //Save to DB
-            if (this.game) {
-                //this.db.collection("games").doc("this.game.title").update(this.game)
-                this.db.collection("games").doc("Test").update({ ...this.game}).then(doc =>
-                {
-                    console.log("Save to database!")
-                }).catch(console.log)
-            }
 
-        }).catch(console.log)
+            let player =  players[Math.floor(Math.random() * players.length)];
+            this.db.collection("games").doc(game.title).update({
+                players : players,
+                murderer :{
+                    name: player.character,
+                    weapon: player.weapon,
+                },
+            }).then(doc => { console.log("Assigning players and murderer completed.")}).catch(console.log)
 
+        })
     }
 
     documentToDomainObject = _ => {
         const object = _.payload.doc.data();
         object.id = _.payload.doc.id;
         return object;
-    }
-
-    joinGame(game) {
-        console.log(game)
-        if (game.players.length >= playersToPlay) {
-            alert("Game is Full")
-        } else {
-            if (game.players.length >= (playersToPlay - 1)) {
-                this.db.collection('games').doc(game.title).set({
-                    title: game.title,
-                    full: true,
-                    players: [...game.players, {
-                        name: this.user,
-                        location: _.STUDY, // TODO dont harcode
-                        character: _.MISS_SCARLET // TODO dont harcode
-                    }],
-                    turn: 0
-                })
-            } else {
-                this.db.collection('games').doc(game.title).set({
-                    title: game.title,
-                    full: false,
-                    players: [...game.players, {
-                        name: this.user,
-                        location: _.STUDY, // TODO dont harcode
-                        character: _.MISS_SCARLET // TODO dont harcode
-                    }],
-                    turn: null
-                })
-            }
-        }
     }
 
     nextTurn(game) {
