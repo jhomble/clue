@@ -150,52 +150,53 @@
                             <h4 *ngIf="currentPlayer.name == undefined">The Game hasn't Started. Please Wait</h4>
                             <h2>{{banner}}</h2>
 
-						<div *ngIf="currentlyInGame">
-                            <p>
-							Character:
-							<select id = "character">
-		    				   <option value = "None"></option>
-							   <option value = "Miss Scarlet">Miss Scarlet</option>
-							   <option value = "Mrs. Peacock">Mrs. Peacock</option>
-							   <option value = "Professor Plum">Professor Plum</option>
-							   <option value = "Mr. Boddy">Mr. Boddy</option>
-							   <option value = "Mrs. White">Mrs. White</option>
-							   <option value = "Colonel Mustard">Colonel Mustard</option>
-							</select>
-							
-							Room:
-							<select id = "room">
-							   <option value = "None"></option>
-							   <option value = "Study">Study</option>
-							   <option value = "Hall">Hall</option>
-							   <option value = "Lounge">Lounge</option>
-							   <option value = "Library">Library</option>
-							   <option value = "Billiard">Billiard</option>
-							   <option value = "Dining">Dining</option>
-							   <option value = "Conservatory">Conservatory</option>
-							   <option value = "Ballroom">Ballroom</option>
-							   <option value = "Kitchen">Kitchen</option>
-							</select>
-							
-							Weapon:
-							<select id = "weapon">
-							   <option value = "None"></option>
-							   <option value = "Wrench">Wrench</option>
-							   <option value = "Candle Stick">Candle Stick</option>
-							   <option value = "Rope">Rope</option>
-							   <option value = "Lead Pipe">Lead Pipe</option>
-							   <option value = "Dagger">Dagger</option>
-							   <option value = "Revolver">Revolver</option>
-							</select>
-                      
-							
-							<button (click)="makeAccusation()">Make Accusation</button>
-							<!--<button id="makeSuggest" (click)="makeSuggestion()">Make Suggestion</button> --> 
-							</p>
-							<p>
-                            <button (click)="closeGame(game)">Close Game</button>
-							</p>
-                       </div>
+                            <div *ngIf="currentlyInGame">
+                                <p>
+                                    Character:
+                                    <select id="character">
+                                        <option value="None"></option>
+                                        <option value="Miss Scarlet">Miss Scarlet</option>
+                                        <option value="Mrs. Peacock">Mrs. Peacock</option>
+                                        <option value="Professor Plum">Professor Plum</option>
+                                        <option value="Mr. Boddy">Mr. Boddy</option>
+                                        <option value="Mrs. White">Mrs. White</option>
+                                        <option value="Colonel Mustard">Colonel Mustard</option>
+                                    </select>
+
+                                    Room:
+                                    <select id="room">
+                                        <option value="None"></option>
+                                        <option value="Study">Study</option>
+                                        <option value="Hall">Hall</option>
+                                        <option value="Lounge">Lounge</option>
+                                        <option value="Library">Library</option>
+                                        <option value="Billiard">Billiard</option>
+                                        <option value="Dining">Dining</option>
+                                        <option value="Conservatory">Conservatory</option>
+                                        <option value="Ballroom">Ballroom</option>
+                                        <option value="Kitchen">Kitchen</option>
+                                    </select>
+
+                                    Weapon:
+                                    <select id="weapon">
+                                        <option value="None"></option>
+                                        <option value="Wrench">Wrench</option>
+                                        <option value="Candle Stick">Candle Stick</option>
+                                        <option value="Rope">Rope</option>
+                                        <option value="Lead Pipe">Lead Pipe</option>
+                                        <option value="Dagger">Dagger</option>
+                                        <option value="Revolver">Revolver</option>
+                                    </select>
+
+
+                                    <button (click)="makeAccusation()">Make Accusation</button>
+                                    <!--<button id="makeSuggest" (click)="makeSuggestion()">Make Suggestion</button> -->
+                                </p>
+                                <p>
+                                    <button (click)="closeGame(game)">Close Game</button>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
