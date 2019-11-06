@@ -133,12 +133,14 @@ export class HomePageComponent {
 		var wText = (<HTMLOptionElement>wOpt).text;
 		
 		// TODO 
-		// murderer 
-		var mChar = _.COLONEL_MUSTARD; 
-		var mRoom = _.BALLROOM; 
-		var mWeapon = _.ROPE; 
+		// set murderer 
+		var mChar = _.COLONEL_MUSTARD; //this.game.murderer.name; 
+		var mRoom = _.BALLROOM; 	   // this.game.murderer.room; 
+		var mWeapon = _.ROPE; 		   // this.game.murderer.weapon; 
 		// current character 
-		var currChar = this.user; //currentPlayer; 
+		// set to character name 
+		var currChar = this.game.players[this.game.turn].character; 
+		var currLoc = this.game.players[this.game.turn].location; 
 		
 		// check if all List Boxes are filled in 
 		if(cVal == "None"|| rVal == "None"|| wVal == "None") { 
@@ -147,7 +149,9 @@ export class HomePageComponent {
 		} else { 
 			if (this.currentlyInGame) {
 		      if (this.isMyTurn()) {
-				if(this.isInRoom()) {	// TODO need to implement isInRoom() method  
+			
+				// call isInRoom to see if player is in room. If so, continue.
+				if(this.isInRoom(currLoc)) { 
 				
 					// now we can compare if accusation is correct or not 
 					// compare accusation vs. real - if true accusation
@@ -161,31 +165,45 @@ export class HomePageComponent {
 						
 					} else { // if wrong accusation
 						 
-						this.banner = currChar + ' has made a wrong accusation. Moving ' + cVal + ' to ' + rVal;  
+						this.banner = currChar + ' has made a wrong accusation. Moving ' + cVal + ' to ' + rVal  
 						// TODO: set player canMakeAccusation flag = false 
 						// TODO: set List Box back to index = 0; 
 	
-						// TODO: move accused player to accused room 
-						//this.gameService.movePlayer(move, this.currentPlayer, this.game);
-		          		this.gameService.nextTurn(this.game);	
+						// move accused player to accused room 
+						this.gameService.movePlayer(rVal, cVal, this.game);
+						this.gameService.nextTurn(this.game);	
 					}
 					
 				} else {
-					this.banner = 'Not in Room'
+					this.banner = 'You are not in a room.'
 				} 
 		      } else {
-		        this.banner = `Not your turn`
+		        this.banner = `Sorry, it is not your turn.`
 		      }
 		    } else {
-		      this.banner = `Not in a game`
+		      this.banner = `You are not currently in a game.`
 		    }
 		} 
 	}
 	
-	makeSuggestion() { 
-		
-	}
-
+	// returns boolean
+	isInRoom(playerLoc) { 
+	
+	      switch (playerLoc) {
+	        case _.STUDY: 
+			case _.LOUNGE:
+			case _.LIBRARY: 
+			case _.BILLIARD: 
+			case _.DINING:
+			case _.CONSERVATORY:
+			case _.BALLROOM: 
+			case _.KITCHEN: 
+				return true; 
+	        default:
+	          	return false; 
+	      }
+  	}
+	
   clickCell(move: string) {
     let possibleMoves = this.actionsService.possibleMoves(this.currentPlayer['location'])
     if (this.currentlyInGame) {
@@ -224,10 +242,6 @@ export class HomePageComponent {
 
   isMyTurn() {
     return this.game.players[this.game.turn].name === this.user;
-  }
-
-  isInRoom() { 
-			return true; 
   }
 
   setPlayerLocations() {

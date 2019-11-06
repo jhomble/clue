@@ -103,7 +103,7 @@ export class GameService {
 
             //Select murderer at random
             this.game.push({ murderer: this.game.players[Math.floor(Math.random() * this.game.length)] });
-
+			
             //Save to DB
             if (this.game) {
                 //this.db.collection("games").doc("this.game.title").update(this.game)
