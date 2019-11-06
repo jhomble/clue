@@ -113,10 +113,6 @@ export class HomePageComponent {
     this.gameService.createGame(this.gameTitle)
   }
 
-  isInRoom() {
-	return true; 
-  }
-
   makeAccusation() { 
 	
 		var a = document.getElementById('makeAccuse'); 
@@ -209,10 +205,6 @@ export class HomePageComponent {
     }
   }
 
-  initGame(){
-    this.gameService.initGame();
-  }
-
   joinGame(game) {
     this.afAuth.user.subscribe((user) => {
       this.user = user.email
@@ -232,6 +224,10 @@ export class HomePageComponent {
 
   isMyTurn() {
     return this.game.players[this.game.turn].name === this.user;
+  }
+
+  isInRoom() { 
+	return true; 
   }
 
   setPlayerLocations() {
@@ -272,18 +268,18 @@ export class HomePageComponent {
         case _.LIBRARY:
           this.nameLibrary = player.character
           break;
-        // case _.BILLIARD:
-        //   this.nameBilliard = player.character
-        //   break;
+        case _.BILLIARD:
+          this.nameBilliard = player.character
+          break;
         case _.DINING:
           this.nameDining = player.character
           break;
         case _.CONSERVATORY:
           this.nameConservatory = player.character
           break;
-        // case _.BALLROOM:
-        //   this.nameBallRoom = player.character
-        //   break;
+        case _.BALLROOM:
+          this.nameBallRoom = player.character
+          break;
         case _.KITCHEN:
           this.nameKitchen = player.character
           break;
