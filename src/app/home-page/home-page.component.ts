@@ -132,15 +132,15 @@ export class HomePageComponent {
 		var wVal = (<HTMLOptionElement>wOpt).value; 
 		var wText = (<HTMLOptionElement>wOpt).text;
 		
-		// TODO 
-		// set murderer 
-		var mChar = _.COLONEL_MUSTARD; //this.game.murderer.name; 
-		var mRoom = _.BALLROOM; 	   // this.game.murderer.room; 
-		var mWeapon = _.ROPE; 		   // this.game.murderer.weapon; 
 		// current character 
 		// set to character name 
 		var currChar = this.game.players[this.game.turn].character; 
 		var currLoc = this.game.players[this.game.turn].location; 
+		// TODO 
+		// set murderer 
+		var mChar = _.MRS_PEACOCK; // this.game.murderer.character; 
+		var mRoom = _.BALLROOM; //this.game.murderer.room; 
+		var mWeapon = _.CANDLE_STICK; //this.game.murderer.weapon; 
 		
 		// check if all List Boxes are filled in 
 		if(cVal == "None"|| rVal == "None"|| wVal == "None") { 
@@ -166,9 +166,9 @@ export class HomePageComponent {
 					} else { // if wrong accusation
 						 
 						this.banner = currChar + ' has made a wrong accusation. Moving ' + cVal + ' to ' + rVal  
-						// TODO: set player canMakeAccusation flag = false 
-						// TODO: set List Box back to index = 0; 
-	
+						// TODO: set player canMakeAccusation flag = false; check as a condition for this. 
+						// once player's flag = false, player cannot take any more turns.
+						
 						// move accused player to accused room 
 						this.gameService.movePlayer(rVal, cVal, this.game);
 						this.gameService.nextTurn(this.game);	

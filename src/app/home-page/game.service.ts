@@ -54,6 +54,7 @@ export class GameService {
             players: [],
             murderer : {
                 name : "",
+				room : "", 
                 weapon: "",
             },
         })
@@ -157,6 +158,7 @@ export class GameService {
                 players : players,
                 murderer :{
                     name: player.character,
+					room: player.room, 
                     weapon: player.weapon,
                 },
             }).then(doc => { console.log("Assigning players and murderer completed.")}).catch(console.log)
