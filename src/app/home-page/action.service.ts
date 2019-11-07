@@ -13,12 +13,6 @@ export class ActionService {
 
     user = null 
 
-    characters = [_.PROFESSOR_PLUM, _.MISS_SCARLET, _.COLONEL_MUSTARD, _.MR_BODDY, _.MRS_WHITE, _.MRS_PEACOCK]
-    rooms = [_.STUDY, _.LOUNGE, _.LIBRARY, _.KITCHEN,
-    _.HALL, _.DINING, _.CONSERVATORY];
-    weapons = [_.WRENCH, _.CANDLE_STICK, _.ROPE, _.LEAD_PIPE, _.DAGGER, _.REVOLVER];
-    cards = [this.characters, this.rooms, this.weapons]
-
     constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) {
        
         this.afAuth.user.subscribe((user) => {
@@ -82,33 +76,4 @@ export class ActionService {
             return !otherPlayerLocations.contains(move)
         })
     }
-
-    // dealHands(deck){
-
-    //     const result = this.db.firestore.collection('games').doc('Test').get();
-
-    //     result.then(doc =>
-    //     {
-    //         let num_cards = this.cards.le
-    //         let players = doc.data().players;
-
-    //         let numPlayers = players.length;
-    //         let index = 0;
-    //         do {
-    //             let left = ~~(Math.random() * this.cards.length);
-    //             let card = 1 << left;
-    //             if ((deck & card) === card) {
-    //                 deck &= ~card;
-    //                 //
-    //                 let who = index % numPlayers;
-    //                 players[+].hand |= card;
-    //                 index++;
-    //             }
-    //             if (deck === 0) {
-    //                 index = this.cards.length - 3;
-    //             }
-    //         } while (index < this.cards);
-
-    //     }).catch(console.log)
-    // }
 }

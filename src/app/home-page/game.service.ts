@@ -1,9 +1,11 @@
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { ActionService } from './action.service';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from './constants';
+import { DH_CHECK_P_NOT_PRIME, SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 const playersToPlay = 1
 
 @Injectable({
@@ -12,15 +14,11 @@ const playersToPlay = 1
 
 export class GameService {
 
+    actionsService: ActionService;
     game = null;
     subscription;
     snapshot = false
     user = null
-    characters = [_.PROFESSOR_PLUM, _.MISS_SCARLET, _.COLONEL_MUSTARD, _.MR_BODDY, _.MRS_WHITE, _.MRS_PEACOCK]
-    rooms = [_.STUDY, _.LOUNGE, _.LIBRARY, _.KITCHEN,
-    _.HALL, _.DINING, _.CONSERVATORY];
-    weapons = [_.WRENCH, _.CANDLE_STICK, _.ROPE, _.LEAD_PIPE, _.DAGGER, _.REVOLVER];
-
 
     subscribeToMessages() {
         return this.db.collection('messages').doc('messages');
@@ -52,6 +50,7 @@ export class GameService {
             full : full,
             users : [],
             players: [],
+            characters: [],
             murderer : {
                 name : "",
 				room : "", 
@@ -86,7 +85,7 @@ export class GameService {
 
                     if (game.players.length + 1 >= playersToPlay)
                     {
-                        this.assignPlayers(game);
+                        this.initGame(game);
                     }
                 }).catch(console.log)
 
@@ -115,55 +114,127 @@ export class GameService {
         }
     }
 
-    assignPlayers(game) {
+    initGame(game) {
 
-        console.log("Assigning players and murderer...")
         const result = this.db.firestore.collection('games').doc(game.title).get();
-        
-        //Retrieve data from firestore
+
+        let characters = [_.PROFESSOR_PLUM, _.MISS_SCARLET, _.COLONEL_MUSTARD, _.MR_BODDY, _.MRS_WHITE, _.MRS_PEACOCK]
+        let rooms = [_.STUDY, _.LOUNGE, _.LIBRARY, _.KITCHEN,
+            _.HALL, _.DINING, _.CONSERVATORY];
+        let weapons = [_.WRENCH, _.CANDLE_STICK, _.ROPE, _.LEAD_PIPE, _.DAGGER, _.REVOLVER];
+
         result.then(doc => {
 
-            //Variables
-            let count = 0
-            let arr = []
-            let users = []
-            let players = []
+             //Variables
+             let users = []
+             let players = []
+             var deck = [];
+            
+            //Create murderer at random
+            let murderer = {
+                name : characters[Math.floor(Math.random() * characters.length)],
+                room : rooms[Math.floor(Math.random() * rooms.length)],
+                weapon : weapons[Math.floor(Math.random() * weapons.length)],
+            };
 
+            //Concat characters, weapons and rooms to create deck
+            deck = deck.concat(characters, weapons, rooms);
 
-            // Add users to users list
+            //Add users to users list
             for (let i = 0; i < doc.data().users.length; i++){
                 console.log()
                 users.push(doc.data().users[i])
             }
 
-            while (arr.length < users.length) {
-                var r = Math.floor(Math.random() * users.length) + 1;
-                if (arr.indexOf(r) === -1) arr.push(r);
-            }
-
-            users.forEach(user => {
-                players.push({
-                        name : user,
-                        character: this.characters[arr[count]],
-                        weapon: this.weapons[arr[count]],
-                        room: this.rooms[arr[count]],
-                        turn: 0,
-                });
-                count++;
-            })
-
-
-            let player =  players[Math.floor(Math.random() * players.length)];
+            //Assign players and deal hands
+            players = this.dealHands(deck, this.assignPlayers(users,characters))
+            
+            //Update game model
             this.db.collection("games").doc(game.title).update({
                 players : players,
-                murderer :{
-                    name: player.character,
-					room: player.room, 
-                    weapon: player.weapon,
-                },
-            }).then(doc => { console.log("Assigning players and murderer completed.")}).catch(console.log)
+                murderer : murderer,
+                characters : this.assignCharacterLocations(rooms, characters),
+            })
+        }).catch(console.log)
+    }
 
+    assignCharacterLocations(rooms, characters){
+        //Variables
+        let count = 0
+        let arr = []
+        let characterLocation = []
+
+        while (arr.length < characters.length) {
+            var r = Math.floor(Math.random() * characters.length) + 1;
+            if (arr.indexOf(r) === -1) arr.push(r);
+        }
+
+        characters.forEach(character => {
+            characterLocation.push({
+                character : character,
+                room : rooms[arr[count]]
+            })
+            count++
+        });
+
+        return characterLocation
+    }
+
+    assignPlayers(users, characters) {
+
+        //Variables
+        let count = 0
+        let players = [];
+        let arr = []
+        
+        //Create random list of unique indexes for each users
+        while (arr.length < users.length) {
+            var r = Math.floor(Math.random() * users.length) + 1;
+            if (arr.indexOf(r) === -1) arr.push(r);
+        }
+
+        //Assign player to user
+        users.forEach(user => {
+            players.push({
+                    name : user,
+                    character: characters[arr[count]],
+                    turn: 0,
+                    cards : [],
+            });
+            count++;
         })
+
+        //return players
+        return players;
+    }
+
+    dealHands(cards, players){
+
+        //Shuffle deck
+        let deck = this.shuffle(cards);
+
+        //Pass out cards
+        while (deck.length !== 0) {
+           for (let i = 0; i < players.length; i++) {
+               if (deck.length > 0) {
+                    players[i].cards.push(deck.pop())
+               }
+                
+            }
+        }
+
+        //Return players with cards
+        return  players;
+    }
+
+    shuffle(deck: [] ){
+        for (let i = deck.length - 1; i > 0; i--) {
+           let j = Math.floor(Math.random() * (i + 1));
+           let swap = deck[i];
+           deck[i] = deck[j];
+           deck[j] = swap;
+       }
+       return deck;
     }
 
     documentToDomainObject = _ => {
