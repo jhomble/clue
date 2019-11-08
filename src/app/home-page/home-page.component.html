@@ -73,75 +73,82 @@
 
                         <div *ngIf="currentlyInGame" class="">
                             <div *ngIf="currentPlayer != undefined">
-                                <h3>Click Cell to Advance Turn</h3>
-                                <h3>You are currently in the {{currentPlayer.location}}</h3>
-                                <div class="grid">
-                                    <div (click)="clickCell('Study')">Study
-                                        <p>{{nameStudy}}</p>
+                                <h2>You are currently playing as {{currentPlayer.character}}</h2>
+                                <div class="flex-row">
+                                    <div class="card-panel">
+                                        <h4>Cards:</h4>
+                                        <div *ngFor="let card of currentPlayer['cards']">
+                                            <div>{{card}}</div>
+                                        </div>
                                     </div>
-                                    <div class="hallway" (click)="clickCell('Hall A')">A
-                                        <p>{{nameA}}</p>
-                                    </div>
-                                    <div (click)="clickCell('Hall')">Hall
-                                        <p>{{nameHall}}</p>
-                                    </div>
-                                    <div class="hallway" (click)="clickCell('Hall B')">B
-                                        <p>{{nameB}}</p>
-                                    </div>
-                                    <div (click)="clickCell('Lounge')">Lounge
-                                        <p>{{nameLounge}}</p>
-                                    </div>
-                                    <div class="hallway-vert" (click)="clickCell('Hall C')">C
-                                        <p>{{nameC}}</p>
-                                    </div>
-                                    <div class=spacer></div>
-                                    <div class="hallway-vert" (click)="clickCell('Hall D')">D
-                                        <p>{{nameD}}</p>
-                                    </div>
-                                    <div class=spacer></div>
-                                    <div class="hallway-vert" (click)="clickCell('Hall E')">E
-                                        <p>{{nameE}}</p>
-                                    </div>
-                                    <div (click)="clickCell('Library')">Library
-                                        <p>{{nameLibrary}}</p>
-                                    </div>
-                                    <div class="hallway" (click)="clickCell('Hall F')">F
-                                        <p>{{nameF}}</p>
-                                    </div>
-                                    <div (click)="clickCell('Billiard')">Billiard
-                                        <p>{{nameBilliard}}</p>
-                                    </div>
-                                    <div class="hallway" (click)="clickCell('Hall G')">G
-                                        <p>{{nameG}}</p>
-                                    </div>
-                                    <div (click)="clickCell('Dining')">Dining
-                                        <p>{{nameDining}}</p>
-                                    </div>
-                                    <div class="hallway-vert" (click)="clickCell('Hall H')">H
-                                        <p>{{nameH}}</p>
-                                    </div>
-                                    <div class=spacer></div>
-                                    <div class="hallway-vert" (click)="clickCell('Hall I')">I
-                                        <p>{{nameI}}</p>
-                                    </div>
-                                    <div class=spacer></div>
-                                    <div class="hallway-vert" (click)="clickCell('Hall J')">J
-                                        <p>{{nameJ}}</p>
-                                    </div>
-                                    <div (click)="clickCell('Conservatory')">Conservatory
-                                        <p>{{nameConservatory}}</p>
-                                    </div>
-                                    <div class="hallway" (click)="clickCell('Hall K')">K
-                                        <p>{{nameK}}</p>
-                                    </div>
-                                    <div (click)="clickCell('Ball Room')">Ball Room
-                                        <p>{{nameBallRoom}}</p>
-                                    </div>
-                                    <div class="hallway" (click)="clickCell('Hall L')">L
-                                        <p>{{nameL}}</p>
-                                    </div>
-                                    <div (click)="clickCell('Kitchen')">Kitchen
-                                        <p>{{nameKitchen}}</p>
+                                    <div class="grid">
+                                        <div (click)="clickCell('Study')">Study
+                                            <p>{{nameStudy}}</p>
+                                        </div>
+                                        <div class="hallway" (click)="clickCell('Hall A')">A
+                                            <p>{{nameA}}</p>
+                                        </div>
+                                        <div (click)="clickCell('Hall')">Hall
+                                            <p>{{nameHall}}</p>
+                                        </div>
+                                        <div class="hallway" (click)="clickCell('Hall B')">B
+                                            <p>{{nameB}}</p>
+                                        </div>
+                                        <div (click)="clickCell('Lounge')">Lounge
+                                            <p>{{nameLounge}}</p>
+                                        </div>
+                                        <div class="hallway-vert" (click)="clickCell('Hall C')">C
+                                            <p>{{nameC}}</p>
+                                        </div>
+                                        <div class=spacer></div>
+                                        <div class="hallway-vert" (click)="clickCell('Hall D')">D
+                                            <p>{{nameD}}</p>
+                                        </div>
+                                        <div class=spacer></div>
+                                        <div class="hallway-vert" (click)="clickCell('Hall E')">E
+                                            <p>{{nameE}}</p>
+                                        </div>
+                                        <div (click)="clickCell('Library')">Library
+                                            <p>{{nameLibrary}}</p>
+                                        </div>
+                                        <div class="hallway" (click)="clickCell('Hall F')">F
+                                            <p>{{nameF}}</p>
+                                        </div>
+                                        <div (click)="clickCell('Billiard')">Billiard
+                                            <p>{{nameBilliard}}</p>
+                                        </div>
+                                        <div class="hallway" (click)="clickCell('Hall G')">G
+                                            <p>{{nameG}}</p>
+                                        </div>
+                                        <div (click)="clickCell('Dining')">Dining
+                                            <p>{{nameDining}}</p>
+                                        </div>
+                                        <div class="hallway-vert" (click)="clickCell('Hall H')">H
+                                            <p>{{nameH}}</p>
+                                        </div>
+                                        <div class=spacer></div>
+                                        <div class="hallway-vert" (click)="clickCell('Hall I')">I
+                                            <p>{{nameI}}</p>
+                                        </div>
+                                        <div class=spacer></div>
+                                        <div class="hallway-vert" (click)="clickCell('Hall J')">J
+                                            <p>{{nameJ}}</p>
+                                        </div>
+                                        <div (click)="clickCell('Conservatory')">Conservatory
+                                            <p>{{nameConservatory}}</p>
+                                        </div>
+                                        <div class="hallway" (click)="clickCell('Hall K')">K
+                                            <p>{{nameK}}</p>
+                                        </div>
+                                        <div (click)="clickCell('Ballroom')">Ball Room
+                                            <p>{{nameBallRoom}}</p>
+                                        </div>
+                                        <div class="hallway" (click)="clickCell('Hall L')">L
+                                            <p>{{nameL}}</p>
+                                        </div>
+                                        <div (click)="clickCell('Kitchen')">Kitchen
+                                            <p>{{nameKitchen}}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

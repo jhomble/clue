@@ -5,7 +5,6 @@ import { ActionService } from './action.service';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from './constants';
-import { DH_CHECK_P_NOT_PRIME, SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 const playersToPlay = 1
 
 @Injectable({
@@ -151,6 +150,7 @@ export class GameService {
             
             //Update game model
             this.db.collection("games").doc(game.title).update({
+                turn: 0,
                 players : players,
                 murderer : murderer,
                 characters : this.assignCharacterLocations(rooms, characters),
@@ -198,13 +198,10 @@ export class GameService {
             players.push({
                     name : user,
                     character: characters[arr[count]],
-                    turn: 0,
                     cards : [],
             });
             count++;
         })
-
-        //return players
         return players;
     }
 
@@ -248,14 +245,15 @@ export class GameService {
             title: game.title,
             full: true,
             players: game.players,
+            characters: game.characters,
             turn: (game.turn + 1) % (game.players.length)
         })
     }
 
     movePlayer(move, player, game) {
-        game.players.forEach((x) => {
-            if (x.name === player.name) {
-                x.location = move
+        game.characters.forEach((x) => {
+            if (x.character === player.character) {
+                x.room = move
             }
         })
 
@@ -263,7 +261,8 @@ export class GameService {
             title: game.title,
             full: true,
             players: game.players,
-            turn: (game.turn + 1) % (game.players.length)
+            characters: game.characters,
+            turn: game.turn
         })
     }
 

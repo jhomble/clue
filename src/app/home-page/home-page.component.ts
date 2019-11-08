@@ -9,11 +9,11 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import * as _ from './constants';
 
-	@Component({
-	  selector: 'app-home-page',
-	  templateUrl: './home-page.component.html',
-	  styleUrls: ['./home-page.component.scss']
-	})
+@Component({
+  selector: 'app-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.scss']
+})
 export class HomePageComponent {
   message = "";
   gameTitle = "";
@@ -93,8 +93,8 @@ export class HomePageComponent {
             this.currentlyInGame = true;
             this.game = gamesIn[0]
             this.currentPlayer = this.game.players[this.game.turn]
+            this.setPlayerLocations();
           }
-          this.setPlayerLocations();
         })
       ).subscribe()
 
@@ -113,99 +113,11 @@ export class HomePageComponent {
     this.gameService.createGame(this.gameTitle)
   }
 
-  makeAccusation() { 
-	
-		var a = document.getElementById('makeAccuse'); 
-		var c = document.getElementById('character') as HTMLSelectElement; 
-		var cSel = c.selectedIndex; 
-		var cOpt = c.options[cSel]; 
-		var cVal = (<HTMLOptionElement>cOpt).value; 
-		var cText = (<HTMLOptionElement>cOpt).text;
-		var r = document.getElementById('room') as HTMLSelectElement; 
-		var rSel = r.selectedIndex; 
-		var rOpt = r.options[rSel]; 
-		var rVal = (<HTMLOptionElement>rOpt).value; 
-		var rText = (<HTMLOptionElement>rOpt).text;
-		var w = document.getElementById('weapon') as HTMLSelectElement; 
-		var wSel = w.selectedIndex; 
-		var wOpt = w.options[wSel]; 
-		var wVal = (<HTMLOptionElement>wOpt).value; 
-		var wText = (<HTMLOptionElement>wOpt).text;
-		
-		// current character 
-		// set to character name 
-		var currChar = this.game.players[this.game.turn].character; 
-		var currLoc = this.game.players[this.game.turn].location; 
-		// TODO 
-		// set murderer 
-		var mChar = _.MRS_PEACOCK; // this.game.murderer.character; 
-		var mRoom = _.BALLROOM; //this.game.murderer.room; 
-		var mWeapon = _.CANDLE_STICK; //this.game.murderer.weapon; 
-		
-		// check if all List Boxes are filled in 
-		if(cVal == "None"|| rVal == "None"|| wVal == "None") { 
-			this.banner = 'Please fill in all 3 List Boxes'
-			
-		} else { 
-			if (this.currentlyInGame) {
-		      if (this.isMyTurn()) {
-			
-				// call isInRoom to see if player is in room. If so, continue.
-				if(this.isInRoom(currLoc)) { 
-				
-					// now we can compare if accusation is correct or not 
-					// compare accusation vs. real - if true accusation
-					if((cVal == mChar) && (rVal == mRoom) && (wVal == mWeapon)) { 
-						
-						// used alert rather than banner bc it prevents message from disappearing due to closeGame() 
-						alert(currChar + ' has made a correct accusation of ' + mChar + ',' + mRoom + ',' + mWeapon + ' and has won the game!')
-						
-						// end game 
-						this.closeGame(this.game); 
-						
-					} else { // if wrong accusation
-						 
-						this.banner = currChar + ' has made a wrong accusation. Moving ' + cVal + ' to ' + rVal  
-						// TODO: set player canMakeAccusation flag = false; check as a condition for this. 
-						// once player's flag = false, player cannot take any more turns.
-						
-						// move accused player to accused room 
-						this.gameService.movePlayer(rVal, cVal, this.game);
-						this.gameService.nextTurn(this.game);	
-					}
-					
-				} else {
-					this.banner = 'You are not in a room.'
-				} 
-		      } else {
-		        this.banner = `Sorry, it is not your turn.`
-		      }
-		    } else {
-		      this.banner = `You are not currently in a game.`
-		    }
-		} 
-	}
-	
-	// returns boolean
-	isInRoom(playerLoc) { 
-	
-	      switch (playerLoc) {
-	        case _.STUDY: 
-			case _.LOUNGE:
-			case _.LIBRARY: 
-			case _.BILLIARD: 
-			case _.DINING:
-			case _.CONSERVATORY:
-			case _.BALLROOM: 
-			case _.KITCHEN: 
-				return true; 
-	        default:
-	          	return false; 
-	      }
-  	}
-	
   clickCell(move: string) {
-    let possibleMoves = this.actionsService.possibleMoves(this.currentPlayer['location'])
+    let location = this.game.characters.find((character) => {
+      return this.currentPlayer['character'] === character.character;
+    })
+    let possibleMoves = this.actionsService.possibleMoves(location.room)
     if (this.currentlyInGame) {
       if (this.isMyTurn()) {
         if (possibleMoves.includes(move)) {
@@ -267,71 +179,70 @@ export class HomePageComponent {
     this.nameK = ""
     this.nameL = ""
 
-    this.game.players.forEach((player) => {
-      console.log(player)
-      switch (player.location) {
+    this.game.characters.forEach((character) => {
+      switch (character.room) {
         case _.STUDY:
-          this.nameStudy = player.character
+          this.nameStudy = `${this.nameStudy} \n ${character.character}`
           break;
         case _.HALL:
-          this.nameHall = player.character
+          this.nameHall =`${this.nameHall}  ${character.character}`
           break;
         case _.LOUNGE:
-          this.nameLounge = player.character
+          this.nameLounge = `${this.nameLounge}  ${character.character}`
           break;
         case _.LIBRARY:
-          this.nameLibrary = player.character
+          this.nameLibrary = `${this.nameLibrary}  ${character.character}`
           break;
         case _.BILLIARD:
-          this.nameBilliard = player.character
+          this.nameBilliard = `${this.nameBilliard}  ${character.character}`
           break;
         case _.DINING:
-          this.nameDining = player.character
+          this.nameDining = `${this.nameDining}  ${character.character}`
           break;
         case _.CONSERVATORY:
-          this.nameConservatory = player.character
+          this.nameConservatory = `${this.nameConservatory}  ${character.character}`
           break;
         case _.BALLROOM:
-          this.nameBallRoom = player.character
+          this.nameBallRoom =`${this.nameBallRoom}  ${character.character}`
           break;
         case _.KITCHEN:
-          this.nameKitchen = player.character
+          this.nameKitchen = `${this.nameKitchen}  ${character.character}`
           break;
         case _.HALL_A:
-          this.nameA = player.character
+          this.nameA = `${this.nameA}  ${character.character}`
           break;
         case _.HALL_B:
-          this.nameB = player.character
+          this.nameB = `${this.nameB}  ${character.character}`
           break;
         case _.HALL_C:
-          this.nameC = player.character
+          this.nameC = `${this.nameC}  ${character.character}`
           break;
         case _.HALL_D:
-          this.nameD = player.character
+          this.nameD = `${this.nameD}  ${character.character}`
           break;
         case _.HALL_E:
-          this.nameE = player.character
+          this.nameE = `${this.nameE}  ${character.character}`
           break;
         case _.HALL_F:
-          this.nameF = player.character
+          this.nameF = `${this.nameF}  ${character.character}`
           break;
         case _.HALL_G:
-          this.nameG = player.character
+          this.nameG = `${this.nameG}  ${character.character}`
           break;
         case _.HALL_H:
-          this.nameH = player.character
+          this.nameH = `${this.nameH}  ${character.character}`
           break;
         case _.HALL_I:
-          this.nameI = player.character
+          this.nameI = `${this.nameI}  ${character.character}`
           break;
         case _.HALL_J:
-          this.nameJ = player.character
+          this.nameJ = `${this.nameJ}  ${character.character}`
           break;
         case _.HALL_K:
-          this.nameK = player.character
+          this.nameK = `${this.nameK}  ${character.character}`
           break;
         case _.HALL_L:
-          this.nameL = player.character
+          this.nameL = `${this.nameL}  ${character.character}` 
           break;
         default:
           console.log("Awk Broken");
