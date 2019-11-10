@@ -41,7 +41,7 @@
                             <div *ngIf="!currentlyInGame">
                                 <div *ngFor="let game of games">
                                     <p>
-                                        {{game.title}} with {{game.players.length}} # of players
+                                        {{game.title}}
                                     </p>
                                     <button mat-button color="primary" (click)="joinGame(game)">Join Game</button>
                                     <button mat-button color="warn" (click)="closeGame(game)">Close Game</button>
@@ -63,7 +63,7 @@
                                 <button mat-button color="primary" type="submit" value="Create a Game"
                                     (click)="createGame()">Create</button>
                             </form>
-
+                            <h1 *ngIf="wonGame">YOU WON!!!</h1>
 
                         </div>
 
@@ -80,6 +80,13 @@
                                         <div *ngFor="let card of currentPlayer['cards']">
                                             <div>{{card}}</div>
                                         </div>
+                                        <br />
+                                        <br />
+                                        <h4>Cards learned:</h4>
+                                        <div *ngFor="let card of newCards">
+                                            <div>{{card}}</div>
+                                        </div>
+
                                     </div>
                                     <div class="grid">
                                         <div (click)="clickCell('Study')">Study
@@ -153,54 +160,75 @@
                                 </div>
                             </div>
 
-                            <h4 *ngIf="currentPlayer.name != undefined">{{currentPlayer.name}}'s turn</h4>
+                            <h4 *ngIf="currentPlayer.name != undefined">{{whoseTurn}}'s turn</h4>
                             <h4 *ngIf="currentPlayer.name == undefined">The Game hasn't Started. Please Wait</h4>
                             <h2>{{banner}}</h2>
 
                             <div *ngIf="currentlyInGame">
+                                <div *ngIf="isMyTurn()" class="flex-col">
+                                    <mat-form-field class="selected-murder">
+                                        <mat-label>Characters</mat-label>
+                                        <select matNativeControl required [(ngModel)]="selectedCharacter">
+                                            <option value="None"></option>
+                                            <option value="Miss Scarlet">Miss Scarlet</option>
+                                            <option value="Mrs. Peacock">Mrs. Peacock</option>
+                                            <option value="Professor Plum">Professor Plum</option>
+                                            <option value="Mr. Boddy">Mr. Boddy</option>
+                                            <option value="Mrs. White">Mrs. White</option>
+                                            <option value="Colonel Mustard">Colonel Mustard</option>
+                                        </select>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="selected-murder">
+                                        <mat-label>Rooms</mat-label>
+                                        <select matNativeControl required [(ngModel)]="selectedRoom">
+                                            <option value="None"></option>
+                                            <option value="Study">Study</option>
+                                            <option value="Hall">Hall</option>
+                                            <option value="Lounge">Lounge</option>
+                                            <option value="Library">Library</option>
+                                            <option value="Billiard">Billiard</option>
+                                            <option value="Dining">Dining</option>
+                                            <option value="Conservatory">Conservatory</option>
+                                            <option value="Ballroom">Ballroom</option>
+                                            <option value="Kitchen">Kitchen</option>
+                                        </select>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="selected-murder">
+                                        <mat-label>Weapons</mat-label>
+                                        <select matNativeControl required [(ngModel)]="selectedWeapon">
+                                            <option value="None"></option>
+                                            <option value="Wrench">Wrench</option>
+                                            <option value="Candle Stick">Candle Stick</option>
+                                            <option value="Rope">Rope</option>
+                                            <option value="Lead Pipe">Lead Pipe</option>
+                                            <option value="Dagger">Dagger</option>
+                                            <option value="Revolver">Revolver</option>
+                                        </select>
+                                    </mat-form-field>
+
+                                    <div>
+                                        <div *ngIf="isInRoom()">
+                                            <button *ngIf="!hasSuggested" class="selected-murder" mat-button color="primary"
+                                                (click)="makeSuggestion()">Make
+                                                Suggestion</button>
+                                            <button class="selected-murder" mat-button color="primary"
+                                                (click)="makeAccusation()">Make
+                                                Accusation</button>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        <button class="selected-murder" mat-button color="primary"
+                                            (click)="endTurn()">End Turn</button>
+                                    </div>
+
+                                </div>
+                                <br />
+                                <br />
+                                <br />
                                 <p>
-                                    Character:
-                                    <select id="character">
-                                        <option value="None"></option>
-                                        <option value="Miss Scarlet">Miss Scarlet</option>
-                                        <option value="Mrs. Peacock">Mrs. Peacock</option>
-                                        <option value="Professor Plum">Professor Plum</option>
-                                        <option value="Mr. Boddy">Mr. Boddy</option>
-                                        <option value="Mrs. White">Mrs. White</option>
-                                        <option value="Colonel Mustard">Colonel Mustard</option>
-                                    </select>
-
-                                    Room:
-                                    <select id="room">
-                                        <option value="None"></option>
-                                        <option value="Study">Study</option>
-                                        <option value="Hall">Hall</option>
-                                        <option value="Lounge">Lounge</option>
-                                        <option value="Library">Library</option>
-                                        <option value="Billiard">Billiard</option>
-                                        <option value="Dining">Dining</option>
-                                        <option value="Conservatory">Conservatory</option>
-                                        <option value="Ballroom">Ballroom</option>
-                                        <option value="Kitchen">Kitchen</option>
-                                    </select>
-
-                                    Weapon:
-                                    <select id="weapon">
-                                        <option value="None"></option>
-                                        <option value="Wrench">Wrench</option>
-                                        <option value="Candle Stick">Candle Stick</option>
-                                        <option value="Rope">Rope</option>
-                                        <option value="Lead Pipe">Lead Pipe</option>
-                                        <option value="Dagger">Dagger</option>
-                                        <option value="Revolver">Revolver</option>
-                                    </select>
-
-
-                                    <button (click)="makeAccusation()">Make Accusation</button>
-                                    <!--<button id="makeSuggest" (click)="makeSuggestion()">Make Suggestion</button> -->
-                                </p>
-                                <p>
-                                    <button (click)="closeGame(game)">Close Game</button>
+                                    <button mat-button color="error" (click)="closeGame(game)">Close Game</button>
                                 </p>
                             </div>
                         </div>

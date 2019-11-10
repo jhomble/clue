@@ -4,10 +4,11 @@ import { Title } from '@angular/platform-browser';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserService } from './user.service';
 import { GameService } from './game.service';
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import * as _ from './constants';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-home-page',
@@ -47,6 +48,17 @@ export class HomePageComponent {
   nameK = ""
   nameL = ""
 
+  selectedCharacter = ''
+  selectedWeapon = ''
+  selectedRoom = ''
+  outOfGame = false
+  wonGame = false
+  newCards = []
+  whoseTurn = ''
+  hasMoved = false
+  hasSuggested = false
+  hasAccused = false
+
   constructor(
     private db: AngularFirestore,
     private afAuth: AngularFireAuth,
@@ -65,6 +77,8 @@ export class HomePageComponent {
     this.afAuth.user.subscribe((user) => {
       this.user = user.email
     })
+    this.whoseTurn = ''
+
   }
 
   ngOnInit() {
@@ -92,7 +106,12 @@ export class HomePageComponent {
           } else {
             this.currentlyInGame = true;
             this.game = gamesIn[0]
-            this.currentPlayer = this.game.players[this.game.turn]
+            this.currentPlayer = this.game.players.find((player) => {
+              return player.name === this.user
+            })
+            this.newCards = this.currentPlayer['newCards']
+            this.whoseTurn = this.game.players[this.game.turn].name
+
             this.setPlayerLocations();
           }
         })
@@ -113,7 +132,17 @@ export class HomePageComponent {
     this.gameService.createGame(this.gameTitle)
   }
 
+  endTurn() {
+    this.hasMoved = false;
+    this.hasSuggested = false;
+    this.gameService.nextTurn(this.game);
+  }
+
   clickCell(move: string) {
+    if (this.hasMoved) {
+      this.banner = 'Already moved this round'
+      return
+    }
     let location = this.game.characters.find((character) => {
       return this.currentPlayer['character'] === character.character;
     })
@@ -122,8 +151,9 @@ export class HomePageComponent {
       if (this.isMyTurn()) {
         if (possibleMoves.includes(move)) {
           this.banner = `Made your move to ${move}`
-          this.gameService.movePlayer(move, this.currentPlayer, this.game);
-          this.gameService.nextTurn(this.game);
+          this.gameService.movePlayer(move, this.currentPlayer['character'], this.game);
+          this.hasMoved = true
+          //this.gameService.nextTurn(this.game);
         } else {
           this.banner = `Cannot move to ${move}`
         }
@@ -185,7 +215,7 @@ export class HomePageComponent {
           this.nameStudy = `${this.nameStudy} \n ${character.character}`
           break;
         case _.HALL:
-          this.nameHall =`${this.nameHall}  ${character.character}`
+          this.nameHall = `${this.nameHall}  ${character.character}`
           break;
         case _.LOUNGE:
           this.nameLounge = `${this.nameLounge}  ${character.character}`
@@ -203,7 +233,7 @@ export class HomePageComponent {
           this.nameConservatory = `${this.nameConservatory}  ${character.character}`
           break;
         case _.BALLROOM:
-          this.nameBallRoom =`${this.nameBallRoom}  ${character.character}`
+          this.nameBallRoom = `${this.nameBallRoom}  ${character.character}`
           break;
         case _.KITCHEN:
           this.nameKitchen = `${this.nameKitchen}  ${character.character}`
@@ -242,7 +272,7 @@ export class HomePageComponent {
           this.nameK = `${this.nameK}  ${character.character}`
           break;
         case _.HALL_L:
-          this.nameL = `${this.nameL}  ${character.character}` 
+          this.nameL = `${this.nameL}  ${character.character}`
           break;
         default:
           console.log("Awk Broken");
@@ -250,5 +280,96 @@ export class HomePageComponent {
       }
     })
 
+  }
+
+  makeSuggestion() {
+    if (this.selectedCharacter === '' ||
+      this.selectedRoom === '' ||
+      this.selectedWeapon === '') {
+      this.banner = 'Fill out all Suggestions';
+      return;
+    }
+
+    if (this.selectedRoom !== this.game.characters.find((character) => {
+      return this.currentPlayer['character'] === character.character;
+    }).room) {
+      this.banner = 'Can only accuse someone in your room!'
+      return
+    }
+    this.hasSuggested = true
+    this.gameService.movePlayer(this.game.characters.find((character) => {
+      return this.currentPlayer['character'] === character.character;
+    }).room, this.selectedCharacter, this.game)
+
+    let otherPlayers = this.game.players.filter((character) => {
+      return this.currentPlayer['character'] !== character.character;
+    })
+
+    console.log(otherPlayers)
+    let otherCards = otherPlayers.flatMap((x) => {
+      return x.cards
+    })
+
+    console.log(otherCards)
+
+    if (otherCards.includes(this.selectedCharacter)) {
+      this.gameService.addCard(this.game, this.user, this.selectedCharacter)
+      return
+    }
+
+    if (otherCards.includes(this.selectedRoom)) {
+      this.gameService.addCard(this.game, this.user, this.selectedRoom)
+      return
+    }
+
+    if (otherCards.includes(this.selectedWeapon)) {
+      this.gameService.addCard(this.game, this.user, this.selectedWeapon)
+      return
+    }
+
+    this.banner = 'No one had any of your suggestions...hint* hint*'
+  }
+
+  makeAccusation() {
+    if (this.selectedCharacter === '' ||
+      this.selectedRoom === '' ||
+      this.selectedWeapon === '') {
+      this.banner = 'Fill out all Accusations';
+      return;
+    }
+
+    let murderer = this.game.murderer;
+    if (this.selectedCharacter === murderer.name &&
+      this.selectedRoom === murderer.room &&
+      this.selectedWeapon === murderer.weapon) {
+      this.wonGame = true
+      this.closeGame(this.game)
+      return;
+    } else {
+      this.banner = 'Sorry you guessed wrong'
+      this.outOfGame = true;
+      return;
+    }
+  }
+
+  // returns boolean
+  isInRoom() {
+    let location = this.game.characters.find((character) => {
+      return this.currentPlayer['character'] === character.character;
+    })
+    switch (location.room) {
+      case _.STUDY:
+      case _.LOUNGE:
+      case _.LIBRARY:
+      case _.BILLIARD:
+      case _.DINING:
+      case _.CONSERVATORY:
+      case _.BALLROOM:
+      case _.KITCHEN:
+      case _.HALL:
+        return true;
+      default:
+        return false;
+    }
   }
 }

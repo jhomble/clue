@@ -5,7 +5,7 @@ import { ActionService } from './action.service';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from './constants';
-const playersToPlay = 1
+const playersToPlay = 2
 
 @Injectable({
     providedIn: 'root'
@@ -40,9 +40,9 @@ export class GameService {
     createGame(name: string) {
         console.log("name", name)
         let full = false;
-        if (playersToPlay === 1) {
-            full = true
-        }
+        // if (playersToPlay === 1) {
+        //     full = true
+        // }
 
         this.db.collection('games').doc(name).set({
             title: name,
@@ -63,7 +63,7 @@ export class GameService {
         if (game.players.length >= playersToPlay) {
             alert("Game is Full")
         } else {
-            if (game.players.length >= (playersToPlay - 1)) {
+            // if (game.players.length >= (playersToPlay - 1)) {
                 
                 this.db.collection('games').doc(game.title).get()
                 .toPromise()
@@ -82,7 +82,7 @@ export class GameService {
                     })
                     console.log(this.user + " added to game!")
 
-                    if (game.players.length + 1 >= playersToPlay)
+                    if (game.users.length + 1 >= playersToPlay)
                     {
                         this.initGame(game);
                     }
@@ -98,7 +98,7 @@ export class GameService {
                 //     }],
                 //     turn: 0
                 // })
-            } else {
+            // } else {
                 // this.db.collection('games').doc(game.title).set({
                 //     title: game.title,
                 //     full: false,
@@ -109,8 +109,20 @@ export class GameService {
                 //     }],
                 //     turn: null
                 // })
-            }
+            // }
         }
+    }
+
+    addCard(game, name, card) {
+        let players = game.players
+        players.forEach((player) => {
+            if (player.name === name) {
+                player.newCards.push(card);
+            }
+        })
+        this.db.collection('games').doc(game.title).update({
+            players
+        })
     }
 
     initGame(game) {
@@ -129,12 +141,28 @@ export class GameService {
              let players = []
              var deck = [];
             
+            let mCharacter = characters[Math.floor(Math.random() * characters.length)]
+            let mRoom = rooms[Math.floor(Math.random() * rooms.length)]
+            let mWeapon = weapons[Math.floor(Math.random() * weapons.length)]
+
             //Create murderer at random
             let murderer = {
-                name : characters[Math.floor(Math.random() * characters.length)],
-                room : rooms[Math.floor(Math.random() * rooms.length)],
-                weapon : weapons[Math.floor(Math.random() * weapons.length)],
+                name : mCharacter,
+                room : mRoom,
+                weapon : mWeapon,
             };
+
+            characters = characters.filter((x) => {
+                return x !== mCharacter
+            })
+            
+            rooms = rooms.filter((x) => {
+                return x !== mRoom
+            })
+
+            weapons = weapons.filter((x) => {
+                return x !== mWeapon
+            })
 
             //Concat characters, weapons and rooms to create deck
             deck = deck.concat(characters, weapons, rooms);
@@ -199,6 +227,7 @@ export class GameService {
                     name : user,
                     character: characters[arr[count]],
                     cards : [],
+                    newCards: [],
             });
             count++;
         })
@@ -245,14 +274,16 @@ export class GameService {
             title: game.title,
             full: true,
             players: game.players,
+            murderer: game.murderer,
             characters: game.characters,
+            users: game.users,
             turn: (game.turn + 1) % (game.players.length)
         })
     }
 
-    movePlayer(move, player, game) {
+    movePlayer(move, character, game) {
         game.characters.forEach((x) => {
-            if (x.character === player.character) {
+            if (x.character === character) {
                 x.room = move
             }
         })
@@ -260,7 +291,9 @@ export class GameService {
         this.db.collection('games').doc(game.title).set({
             title: game.title,
             full: true,
+            murderer: game.murderer,
             players: game.players,
+            users: game.users,
             characters: game.characters,
             turn: game.turn
         })

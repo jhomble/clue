@@ -117,6 +117,10 @@ a {
         margin-right: 30px;
     }
 
+    .selected-murder {
+        width: 200px;
+    }
+
     .grid {
         display: inline-grid;
         grid-gap: 1px;
@@ -148,3 +152,6 @@ a {
 }
 
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
