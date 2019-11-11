@@ -68,12 +68,12 @@
                         </div>
 
                         <br />
-                        <br *ngIf="currentPlayer.name != undefined" />
-                        <br *ngIf="currentPlayer.name != undefined" />
+                        <br *ngIf="currentPlayer['name'] != undefined" />
+                        <br *ngIf="currentPlayer['name'] != undefined" />
 
                         <div *ngIf="currentlyInGame" class="">
                             <div *ngIf="currentPlayer != undefined">
-                                <h2>You are currently playing as {{currentPlayer.character}}</h2>
+                                <h2>You are currently playing as {{currentPlayer['character']}}</h2>
                                 <div class="flex-row">
                                     <div class="card-panel">
                                         <h4>Cards:</h4>
@@ -160,8 +160,8 @@
                                 </div>
                             </div>
 
-                            <h4 *ngIf="currentPlayer.name != undefined">{{whoseTurn}}'s turn</h4>
-                            <h4 *ngIf="currentPlayer.name == undefined">The Game hasn't Started. Please Wait</h4>
+                            <h4 *ngIf="currentPlayer['name'] != undefined">{{whoseTurn}}'s turn</h4>
+                            <h4 *ngIf="currentPlayer['name'] == undefined">The Game hasn't Started. Please Wait</h4>
                             <h2>{{banner}}</h2>
 
                             <div *ngIf="currentlyInGame">

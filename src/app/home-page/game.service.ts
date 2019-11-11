@@ -130,8 +130,7 @@ export class GameService {
         const result = this.db.firestore.collection('games').doc(game.title).get();
 
         let characters = [_.PROFESSOR_PLUM, _.MISS_SCARLET, _.COLONEL_MUSTARD, _.MR_BODDY, _.MRS_WHITE, _.MRS_PEACOCK]
-        let rooms = [_.STUDY, _.LOUNGE, _.LIBRARY, _.KITCHEN,
-            _.HALL, _.DINING, _.CONSERVATORY];
+        let rooms = [_.STUDY, _.LOUNGE, _.LIBRARY, _.KITCHEN, _.HALL, _.DINING, _.CONSERVATORY];
         let weapons = [_.WRENCH, _.CANDLE_STICK, _.ROPE, _.LEAD_PIPE, _.DAGGER, _.REVOLVER];
 
         result.then(doc => {
@@ -175,7 +174,8 @@ export class GameService {
 
             //Assign players and deal hands
             players = this.dealHands(deck, this.assignPlayers(users,characters))
-            
+
+            characters = [_.PROFESSOR_PLUM, _.MISS_SCARLET, _.COLONEL_MUSTARD, _.MR_BODDY, _.MRS_WHITE, _.MRS_PEACOCK]
             //Update game model
             this.db.collection("games").doc(game.title).update({
                 turn: 0,
@@ -200,7 +200,7 @@ export class GameService {
         characters.forEach(character => {
             characterLocation.push({
                 character : character,
-                room : rooms[arr[count]]
+                room : rooms[arr[count] - 1]
             })
             count++
         });
