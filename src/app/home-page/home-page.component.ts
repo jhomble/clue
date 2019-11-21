@@ -212,13 +212,15 @@ export class HomePageComponent {
     this.game.characters.forEach((character) => {
       switch (character.room) {
         case _.STUDY:
-          this.nameStudy = `${this.nameStudy} \n ${character.character}`
+          //this.nameStudy = `${this.nameStudy} ${character.character}` 
+		  this.nameStudy = `${this.nameStudy} ${character.character}`
+
           break;
         case _.HALL:
-          this.nameHall = `${this.nameHall}  ${character.character}`
+          this.nameHall = `${this.nameHall} ${character.character}`
           break;
         case _.LOUNGE:
-          this.nameLounge = `${this.nameLounge}  ${character.character}`
+          this.nameLounge = `${this.nameLounge} ${character.character}`
           break;
         case _.LIBRARY:
           this.nameLibrary = `${this.nameLibrary}  ${character.character}`
