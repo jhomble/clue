@@ -26,15 +26,15 @@ export class HomePageComponent {
   currentPlayer = {}
   latestMessage = ""
 
-  nameStudy = ""
-  nameHall = ""
-  nameLounge = ""
-  nameLibrary = ""
-  nameBilliard = ""
-  nameDining = ""
-  nameConservatory = ""
-  nameBallRoom = ""
-  nameKitchen = ""
+  nameStudy = [] //""
+  nameHall = [] // ""
+  nameLounge = [] // ""
+  nameLibrary = [] //""
+  nameBilliard = [] //""
+  nameDining = [] //""
+  nameConservatory = [] //""
+  nameBallRoom = [] //""
+  nameKitchen = [] // ""
   nameA = ""
   nameB = ""
   nameC = ""
@@ -187,15 +187,15 @@ export class HomePageComponent {
   }
 
   setPlayerLocations() {
-    this.nameStudy = ""
-    this.nameHall = ""
-    this.nameLounge = ""
-    this.nameLibrary = ""
-    this.nameBilliard = ""
-    this.nameDining = ""
-    this.nameConservatory = ""
-    this.nameBallRoom = ""
-    this.nameKitchen = ""
+    this.nameStudy = [] //""
+    this.nameHall = [] //""
+    this.nameLounge = [] //""
+    this.nameLibrary = [] //""
+    this.nameBilliard = [] //""
+    this.nameDining = [] // ""
+    this.nameConservatory = [] //""
+    this.nameBallRoom = [] //""
+    this.nameKitchen = [] //""
     this.nameA = ""
     this.nameB = ""
     this.nameC = ""
@@ -213,32 +213,40 @@ export class HomePageComponent {
       switch (character.room) {
         case _.STUDY:
           //this.nameStudy = `${this.nameStudy} ${character.character}` 
-		  this.nameStudy = `${this.nameStudy} ${character.character}`
-
+		  this.nameStudy.push(`${character.character}`)
+		  
           break;
         case _.HALL:
-          this.nameHall = `${this.nameHall} ${character.character}`
-          break;
+          //this.nameHall = `${this.nameHall} ${character.character}`
+          this.nameHall.push(`${character.character}`)
+		  break;
         case _.LOUNGE:
-          this.nameLounge = `${this.nameLounge} ${character.character}`
+          //this.nameLounge = `${this.nameLounge} ${character.character}`
+		  this.nameLounge.push(`${character.character}`)
           break;
         case _.LIBRARY:
-          this.nameLibrary = `${this.nameLibrary}  ${character.character}`
-          break;
+          //this.nameLibrary = `${this.nameLibrary}  ${character.character}`
+          this.nameLibrary.push(`${character.character}`)
+		  break;
         case _.BILLIARD:
-          this.nameBilliard = `${this.nameBilliard}  ${character.character}`
+          //this.nameBilliard = `${this.nameBilliard}  ${character.character}`
+		  this.nameBilliard.push(`${character.character}`)
           break;
         case _.DINING:
-          this.nameDining = `${this.nameDining}  ${character.character}`
+          //this.nameDining = `${this.nameDining}  ${character.character}`
+		  this.nameDining.push(`${character.character}`)
           break;
         case _.CONSERVATORY:
-          this.nameConservatory = `${this.nameConservatory}  ${character.character}`
+          //this.nameConservatory = `${this.nameConservatory}  ${character.character}`
+ 		  this.nameConservatory.push(`${character.character}`)
           break;
         case _.BALLROOM:
-          this.nameBallRoom = `${this.nameBallRoom}  ${character.character}`
+          //this.nameBallRoom = `${this.nameBallRoom}  ${character.character}`
+		  this.nameBallRoom.push(`${character.character}`)
           break;
         case _.KITCHEN:
-          this.nameKitchen = `${this.nameKitchen}  ${character.character}`
+          //this.nameKitchen = `${this.nameKitchen}  ${character.character}`
+          this.nameKitchen.push(`${character.character}`)
           break;
         case _.HALL_A:
           this.nameA = `${this.nameA}  ${character.character}`
