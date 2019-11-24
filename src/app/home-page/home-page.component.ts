@@ -150,9 +150,64 @@ export class HomePageComponent {
     if (this.currentlyInGame) {
       if (this.isMyTurn()) {
         if (possibleMoves.includes(move)) {
-          this.banner = `Made your move to ${move}`
-          this.gameService.movePlayer(move, this.currentPlayer['character'], this.game);
-          this.hasMoved = true
+	
+			let splitMove = move.split(" ") 
+			let first = splitMove[0];		// ${first}
+			let second = splitMove[1]; 		// ${second}
+			// if the variable for this hall is NOT empty = cannot move here. 
+			
+			let roomVal = ``
+			switch(second) { 
+				case `A`:
+					roomVal = `${this.nameA}`
+					break; 
+				case `B`:
+					roomVal = `${this.nameB}`
+					break; 
+				case `C`:
+					roomVal = `${this.nameC}`
+					break; 
+				case `D`:
+					roomVal = `${this.nameD}`
+					break; 
+				case `E`:
+					roomVal = `${this.nameE}`
+					break; 
+				case `F`:
+					roomVal = `${this.nameF}`
+					break; 
+				case `G`:
+					roomVal = `${this.nameG}`
+					break; 
+				case `H`:
+					roomVal = `${this.nameH}`
+					break; 
+				case `I`:
+					roomVal = `${this.nameI}`
+					break; 
+				case `J`:
+					roomVal = `${this.nameJ}`
+					break; 
+				case `K`:
+					roomVal = `${this.nameK}`
+					break; 
+				case `L`:
+					roomVal = `${this.nameL}`
+					break; 
+				default:
+					break; 
+			}
+			
+			// if someone is in a Hallway AND the hallway is occupied, don't let user move here
+			if(first === "Hall" && second != "" && roomVal != "") {
+				// means this is a hallway 
+				this.banner = `Cannot move to ${move}. Someone else is here.`
+			} else { 
+				this.banner = `Made your move to ${move}`
+          		this.gameService.movePlayer(move, this.currentPlayer['character'], this.game);
+          		this.hasMoved = true
+			}
+	
           //this.gameService.nextTurn(this.game);
         } else {
           this.banner = `Cannot move to ${move}`
