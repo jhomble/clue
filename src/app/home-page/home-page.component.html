@@ -161,7 +161,11 @@
                                             <p>{{nameJ}}</p>
                                         </div>
                                         <div (click)="clickCell('Conservatory')"><font color="custom-orange">Conservatory</font>
-                                            <p>{{nameConservatory}}</p>
+                                            <li *ngFor="let conservatory of nameConservatory">
+												{{conservatory}}
+                                        	</li>
+
+											<!--	<p>{{nameConservatory}}</p> --> 
                                         </div>
                                         <div class="hallway" (click)="clickCell('Hall K')"><font color="custom-orange">K</font>
                                             <p>{{nameK}}</p>

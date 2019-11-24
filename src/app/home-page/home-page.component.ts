@@ -269,7 +269,6 @@ export class HomePageComponent {
         case _.STUDY:
           //this.nameStudy = `${this.nameStudy} ${character.character}` 
 		  this.nameStudy.push(`${character.character}`)
-		  
           break;
         case _.HALL:
           //this.nameHall = `${this.nameHall} ${character.character}`
@@ -377,6 +376,8 @@ export class HomePageComponent {
 
     console.log(otherCards)
 
+///////////////
+/* 
     if (otherCards.includes(this.selectedCharacter)) {
       this.gameService.addCard(this.game, this.user, this.selectedCharacter)
       return
@@ -393,6 +394,40 @@ export class HomePageComponent {
     }
 
     this.banner = 'No one had any of your suggestions...hint* hint*'
+*/
+
+	let otherCharacter = ``
+	let otherRoom = ``
+	let otherWeapon = ``
+	
+	// checking to see what cards the other player has (from the Suggestion) 
+	if (otherCards.includes(this.selectedCharacter)) {
+		otherCharacter = this.selectedCharacter	
+	}
+	if (otherCards.includes(this.selectedRoom)) {
+		otherRoom = this.selectedRoom	
+	}
+	if (otherCards.includes(this.selectedWeapon)) {
+		otherWeapon = this.selectedWeapon	
+	}
+	
+	// if the other player has AT LEAST one of the Suggested cards, prompt the other player to show a card 
+	if(otherCharacter != "" || otherRoom != "" || otherWeapon != "") { 
+		
+		this.banner = `char: ${otherCharacter} - room: ${otherRoom} - weapon: ${otherWeapon}`
+		// prompt other user - let them choose what card to show 
+		// depending on what card the other player chose, add that card to the curr players' deck 
+		
+		
+		//this.gameService.addCard(this.game, this.user, this.selectedCharacter)
+		//this.gameService.addCard(this.game, this.user, this.selectedRoom)
+		//this.gameService.addCard(this.game, this.user, this.selectedWeapon)
+		
+		return 
+	}
+	
+	
+	this.banner = 'No one had any of your suggestions...hint* hint*'
   }
 
   makeAccusation() {
