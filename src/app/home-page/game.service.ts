@@ -281,6 +281,21 @@ export class GameService {
         })
     }
 
+	suggestionChoice(game) { 
+		
+		// set isChoosingSuggestion flag = 1 (true) 
+		
+		this.db.collection('games').doc(game.title).set({
+			title: game.title,
+            full: true,
+            players: game.players,
+            murderer: game.murderer,
+            characters: game.characters,
+            users: game.users,
+            turn: (game.turn + 1) % (game.players.length)
+		})
+	}
+
     movePlayer(move, character, game) {
         game.characters.forEach((x) => {
             if (x.character === character) {
