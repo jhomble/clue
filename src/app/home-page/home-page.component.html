@@ -86,104 +86,125 @@
                                         <div *ngFor="let card of newCards">
                                             <div>{{card}}</div>
                                         </div>
-						
+
 
                                     </div>
                                     <div class="grid">
-                                        <div (click)="clickCell('Study')"><font color="custom-orange">Study</font>
-                                        	<li *ngFor="let study of nameStudy">
-												{{study}}
-                                        	</li>
-                                            <!--<p>{{nameStudy}}</p> --> 
+                                        <div (click)="clickCell('Study')">
+                                            <font color="custom-orange">Study</font>
+                                            <li *ngFor="let study of nameStudy">
+                                                {{study}}
+                                            </li>
+                                            <!--<p>{{nameStudy}}</p> -->
                                         </div>
-                                        <div class="hallway" (click)="clickCell('Hall A')"><font color="custom-orange">A</font>
+                                        <div class="hallway" (click)="clickCell('Hall A')">
+                                            <font color="custom-orange">A</font>
                                             <p>{{nameA}}</p>
                                         </div>
-                                        <div (click)="clickCell('Hall')"><font color="custom-orange">Hall</font>
-											<li *ngFor="let hall of nameHall">
-												{{hall}}
-                                        	</li>
-                                            <!-- <p>{{nameHall}}</p> --> 
+                                        <div (click)="clickCell('Hall')">
+                                            <font color="custom-orange">Hall</font>
+                                            <li *ngFor="let hall of nameHall">
+                                                {{hall}}
+                                            </li>
+                                            <!-- <p>{{nameHall}}</p> -->
                                         </div>
-                                        <div class="hallway" (click)="clickCell('Hall B')"><font color="custom-orange">B</font>
+                                        <div class="hallway" (click)="clickCell('Hall B')">
+                                            <font color="custom-orange">B</font>
                                             <p>{{nameB}}</p>
                                         </div>
-                                        <div (click)="clickCell('Lounge')"><font color="custom-orange">Lounge</font>
-											<li *ngFor="let lounge of nameLounge">
-												{{lounge}}
-                                        	</li>  
-											<!-- <p>{{nameLounge}}</p> --> 
+                                        <div (click)="clickCell('Lounge')">
+                                            <font color="custom-orange">Lounge</font>
+                                            <li *ngFor="let lounge of nameLounge">
+                                                {{lounge}}
+                                            </li>
+                                            <!-- <p>{{nameLounge}}</p> -->
                                         </div>
-                                        <div class="hallway-vert" (click)="clickCell('Hall C')"><font color="custom-orange">C</font>
+                                        <div class="hallway-vert" (click)="clickCell('Hall C')">
+                                            <font color="custom-orange">C</font>
                                             <p>{{nameC}}</p>
                                         </div>
                                         <div class=spacer></div>
-                                        <div class="hallway-vert" (click)="clickCell('Hall D')"><font color="custom-orange">D</font>
+                                        <div class="hallway-vert" (click)="clickCell('Hall D')">
+                                            <font color="custom-orange">D</font>
                                             <p>{{nameD}}</p>
                                         </div>
                                         <div class=spacer></div>
-                                        <div class="hallway-vert" (click)="clickCell('Hall E')"><font color="custom-orange">E</font>
+                                        <div class="hallway-vert" (click)="clickCell('Hall E')">
+                                            <font color="custom-orange">E</font>
                                             <p>{{nameE}}</p>
                                         </div>
-                                        <div (click)="clickCell('Library')"><font color="custom-orange">Library</font>
-											<li *ngFor="let library of nameLibrary">
-												{{library}}
-                                        	</li>  
-                                           <!-- <p>{{nameLibrary}}</p> --> 
+                                        <div (click)="clickCell('Library')">
+                                            <font color="custom-orange">Library</font>
+                                            <li *ngFor="let library of nameLibrary">
+                                                {{library}}
+                                            </li>
+                                            <!-- <p>{{nameLibrary}}</p> -->
                                         </div>
-                                        <div class="hallway" (click)="clickCell('Hall F')"><font color="custom-orange">F</font>
+                                        <div class="hallway" (click)="clickCell('Hall F')">
+                                            <font color="custom-orange">F</font>
                                             <p>{{nameF}}</p>
                                         </div>
-                                        <div (click)="clickCell('Billiard')"><font color="custom-orange">Billiard</font>
-											<li *ngFor="let billiard of nameBilliard">
-												{{billiard}}
-                                        	</li>  
-                                            <!-- <p>{{nameBilliard}}</p> --> 
+                                        <div (click)="clickCell('Billiard')">
+                                            <font color="custom-orange">Billiard</font>
+                                            <li *ngFor="let billiard of nameBilliard">
+                                                {{billiard}}
+                                            </li>
+                                            <!-- <p>{{nameBilliard}}</p> -->
                                         </div>
-                                        <div class="hallway" (click)="clickCell('Hall G')"><font color="custom-orange">G</font>
+                                        <div class="hallway" (click)="clickCell('Hall G')">
+                                            <font color="custom-orange">G</font>
                                             <p>{{nameG}}</p>
                                         </div>
-                                        <div (click)="clickCell('Dining')"><font color="custom-orange">Dining</font>
-											<li *ngFor="let dining of nameDining">
-												{{dining}}
-                                        	</li>  
-                                            <!-- <p>{{nameDining}}</p> --> 
+                                        <div (click)="clickCell('Dining')">
+                                            <font color="custom-orange">Dining</font>
+                                            <li *ngFor="let dining of nameDining">
+                                                {{dining}}
+                                            </li>
+                                            <!-- <p>{{nameDining}}</p> -->
                                         </div>
-                                        <div class="hallway-vert" (click)="clickCell('Hall H')"><font color="custom-orange">H</font>
+                                        <div class="hallway-vert" (click)="clickCell('Hall H')">
+                                            <font color="custom-orange">H</font>
                                             <p>{{nameH}}</p>
                                         </div>
                                         <div class=spacer></div>
-                                        <div class="hallway-vert" (click)="clickCell('Hall I')"><font color="custom-orange">I</font>
+                                        <div class="hallway-vert" (click)="clickCell('Hall I')">
+                                            <font color="custom-orange">I</font>
                                             <p>{{nameI}}</p>
                                         </div>
                                         <div class=spacer></div>
-                                        <div class="hallway-vert" (click)="clickCell('Hall J')"><font color="custom-orange">J</font>
+                                        <div class="hallway-vert" (click)="clickCell('Hall J')">
+                                            <font color="custom-orange">J</font>
                                             <p>{{nameJ}}</p>
                                         </div>
-                                        <div (click)="clickCell('Conservatory')"><font color="custom-orange">Conservatory</font>
+                                        <div (click)="clickCell('Conservatory')">
+                                            <font color="custom-orange">Conservatory</font>
                                             <li *ngFor="let conservatory of nameConservatory">
-												{{conservatory}}
-                                        	</li>
+                                                {{conservatory}}
+                                            </li>
 
-											<!--	<p>{{nameConservatory}}</p> --> 
+                                            <!--	<p>{{nameConservatory}}</p> -->
                                         </div>
-                                        <div class="hallway" (click)="clickCell('Hall K')"><font color="custom-orange">K</font>
+                                        <div class="hallway" (click)="clickCell('Hall K')">
+                                            <font color="custom-orange">K</font>
                                             <p>{{nameK}}</p>
                                         </div>
-                                        <div (click)="clickCell('Ballroom')"><font color="custom-orange">Ball Room</font>
-											<li *ngFor="let ballroom of nameBallroom">
-												{{ballroom}}
-                                        	</li>  
-                                            <!-- <p>{{nameBallRoom}}</p> --> 
+                                        <div (click)="clickCell('Ballroom')">
+                                            <font color="custom-orange">Ball Room</font>
+                                            <li *ngFor="let ballroom of nameBallRoom">
+                                                {{ballroom}}
+                                            </li>
+                                            <!-- <p>{{nameBallRoom}}</p> -->
                                         </div>
-                                        <div class="hallway" (click)="clickCell('Hall L')"><font color="custom-orange">L</font>
+                                        <div class="hallway" (click)="clickCell('Hall L')">
+                                            <font color="custom-orange">L</font>
                                             <p>{{nameL}}</p>
                                         </div>
-                                        <div (click)="clickCell('Kitchen')"><font color="custom-orange">Kitchen</font>
-											<li *ngFor="let kitchen of nameKitchen">
-												{{kitchen}}
-                                        	</li>  
-                                            <!-- <p>{{nameKitchen}}</p> --> 
+                                        <div (click)="clickCell('Kitchen')">
+                                            <font color="custom-orange">Kitchen</font>
+                                            <li *ngFor="let kitchen of nameKitchen">
+                                                {{kitchen}}
+                                            </li>
+                                            <!-- <p>{{nameKitchen}}</p> -->
                                         </div>
                                     </div>
                                 </div>
@@ -239,8 +260,8 @@
 
                                     <div>
                                         <div *ngIf="isInRoom()">
-                                            <button *ngIf="!hasSuggested" class="selected-murder" mat-button color="primary"
-                                                (click)="makeSuggestion()">Make
+                                            <button *ngIf="!hasSuggested" class="selected-murder" mat-button
+                                                color="primary" (click)="makeSuggestion()">Make
                                                 Suggestion</button>
                                             <button class="selected-murder" mat-button color="primary"
                                                 (click)="makeAccusation()">Make
