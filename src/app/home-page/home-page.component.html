@@ -216,7 +216,7 @@
 
                             <div *ngIf="currentlyInGame">
                                 <div *ngIf="isMyTurn()" class="flex-col">
-									<!--<div *ngIf="!isChoosingSuggestion"> --> 
+									<div *ngIf="!isSuggesting()"> 
 	                                    <mat-form-field class="selected-murder">
 	                                        <mat-label>Characters</mat-label>
 	                                        <select matNativeControl required [(ngModel)]="selectedCharacter">
@@ -229,7 +229,7 @@
 	                                            <option value="Colonel Mustard">Colonel Mustard</option>
 	                                        </select>
 	                                    </mat-form-field>
-									<!-- </div> --> 
+									
 	
 	                                    <mat-form-field class="selected-murder">
 	                                        <mat-label>Rooms</mat-label>
@@ -259,10 +259,10 @@
 	                                            <option value="Revolver">Revolver</option>
 	                                        </select>
 	                                    </mat-form-field>
-									
+									</div>
 
                                     <div>
-                                        <div *ngIf="isInRoom()"> <!-- AND is not choosing a card to show --> 
+                                        <div *ngIf="isInRoom() && !isSuggesting()"> <!-- AND is not choosing a card to show --> 
                                             <button *ngIf="!hasSuggested" class="selected-murder" mat-button color="primary"
                                                 (click)="makeSuggestion()">Make Suggestion
 											</button>
@@ -271,16 +271,16 @@
 											</button>
                                         </div>
 
-										<div *ngIf="!hasSuggested"> 
+										<div *ngIf="isSuggesting()"> 
 											<!--<p>	suggestedCharacter !== '' || suggestedRoom !== '' || suggestedWeapon !== ''"> </p>
 											<p>char - {{suggestedCharacter}} room - {{suggestedRoom}} weapon - {{suggestedWeapon}} </p>
 											--> 
-											<button class="selected-murder" mat-button color="primary"
-	                                            (click)="addCharacter()">Show Character</button>
-											<button class="selected-murder" mat-button color="primary"
-	                                            (click)="addRoom()">Show Room</button>
-											<button class="selected-murder" mat-button color="primary"
-	                                            (click)="addWeapon()">Show Weapon</button>
+											<button *ngIf="getCharCard() !== ''" class="selected-murder" mat-button color="primary"
+	                                            (click)="addCharCard()">Show {{getCharCard()}}</button>
+											<button *ngIf="getRoomCard() !== ''" class="selected-murder" mat-button color="primary"
+	                                            (click)="addRoomCard()">Show {{getRoomCard()}}</button>
+											<button *ngIf="getWeaponCard() !== ''" class="selected-murder" mat-button color="primary"
+	                                            (click)="addWeaponCard()">Show {{getWeaponCard()}}</button>
 										</div>
 
                                         <br />

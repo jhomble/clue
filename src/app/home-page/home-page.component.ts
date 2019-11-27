@@ -58,10 +58,12 @@ export class HomePageComponent {
   hasMoved = false
   hasSuggested = false
   hasAccused = false
+
   isChoosingSuggestion = false 
   suggestedCharacter = ""
   suggestedRoom = ""
   suggestedWeapon = "" 
+  selectedCard = "" 
 
   constructor(
     private db: AngularFirestore,
@@ -115,8 +117,24 @@ export class HomePageComponent {
             })
             this.newCards = this.currentPlayer['newCards']
             this.whoseTurn = this.game.players[this.game.turn].name
+			this.setPlayerLocations();
 
-            this.setPlayerLocations();
+/////////////////////////
+			this.banner = `TEST: Other player showed you ${this.selectedCard}` // this.game.turn}`
+			
+			
+		//	if(this.selectedSuggestCard !== "") { 
+				
+		//		this.addSelectedCard()
+				
+			//	this.endTurn()
+
+				// add card to original player's deck
+			//	this.gameService.addCard(this.game, this.user, this.selectedSuggestCard) 
+				
+			//	this.banner = `Other player showed you ${this.selectedSuggestCard}`
+		//	}
+            
           }
         })
       ).subscribe()
@@ -405,15 +423,15 @@ export class HomePageComponent {
 	// assign variables to be used for Button labels 
 	if (otherCards.includes(this.selectedCharacter)) {
 		this.suggestedCharacter = this.selectedCharacter	
-		this.banner = `CHAR: ${this.suggestedCharacter}`
+		//this.banner = `CHAR: ${this.suggestedCharacter}`
 	}
 	if (otherCards.includes(this.selectedRoom)) {
 		this.suggestedRoom = this.selectedRoom	
-		this.banner = `ROOM: ${this.suggestedRoom}`
+		//this.banner = `ROOM: ${this.suggestedRoom}`
 	}
 	if (otherCards.includes(this.selectedWeapon)) {
 		this.suggestedWeapon = this.selectedWeapon
-		this.banner = `WEAPON: ${this.suggestedWeapon}`	
+		//this.banner = `WEAPON: ${this.suggestedWeapon}`	
 	}
 	
 	// if the other player has AT LEAST one of the Suggested cards, prompt the other player to show a card 
@@ -425,9 +443,10 @@ export class HomePageComponent {
 		// depending on what card the other player chose, add that card to the curr players' deck 
 		// only show choice buttons (3)
 		
+	// **loop through all players UNTIL someone has a card that was "Suggested" 
 		// flag 
 		this.isChoosingSuggestion = true 
-		this.gameService.suggestionChoice(this.game)
+		this.gameService.suggestionChoice(this.game, this.isChoosingSuggestion, this.suggestedCharacter, this.suggestedRoom, this.suggestedWeapon)
 		
 		//this.gameService.addCard(this.game, this.user, this.selectedCharacter)
 		//this.gameService.addCard(this.game, this.user, this.selectedRoom)
@@ -439,18 +458,70 @@ export class HomePageComponent {
 	this.banner = 'No one had any of your suggestions...hint* hint*'
   }
 
-  addCharacter() { 
-	this.gameService.addCard(this.game, this.user, this.selectedCharacter)
+  addSelectedCard(card) { 
+	
+	// go back to original player first 
+	this.endTurn()
+	
+	//this.banner = `TEST: ${this.whoseTurn}` //`.game.turn}` // 'users[this.]this.game.players[this.game.turn].name}`
+	//return
+	
+	this.selectedCard = card 
+	
+	// add card to original player's deck
+	this.gameService.addCard(this.game, this.user, card) 
+	
+	this.banner = `Other player showed you ${card}`
+	
 	return
   }
-  addRoom() { 
-	this.gameService.addCard(this.game, this.user, this.selectedRoom)
+
+  addCharCard() { 
+	//this.selectedSuggestCard = this.game.suggestedChar 
+	this.addSelectedCard(this.game.suggestedChar)
 	return
   }
-  addWeapon() { 
-	this.gameService.addCard(this.game, this.user, this.selectedWeapon)
+
+  addRoomCard() {
+	//this.selectedSuggestCard = this.game.suggestedRoom
+	this.addSelectedCard(this.game.suggestedRoom)
+	return
+  }
+
+  addWeaponCard() {
+	//this.selectedSuggestCard = this.game.suggestedWeapon 
+	this.addSelectedCard(this.game.suggestedWeapon)
 	return 
   }
+
+  getCharCard() { 
+	return this.game.suggestedChar
+  }
+
+  getRoomCard() {
+	return this.game.suggestedRoom 
+  }
+
+  getWeaponCard() { 
+	return this.game.suggestedWeapon 
+  }
+
+  isSuggesting() {
+	return this.game.isChoosingSuggestion
+  }
+
+//  addCharacter() { 
+//	this.gameService.addCard(this.game, this.user, this.selectedCharacter)
+//	return
+//  }
+//  addRoom() { 
+//	this.gameService.addCard(this.game, this.user, this.selectedRoom)
+//	return
+//  }
+//  addWeapon() { 
+//	this.gameService.addCard(this.game, this.user, this.selectedWeapon)
+//	return 
+//  }
   
   makeAccusation() {
     if (this.selectedCharacter === '' ||

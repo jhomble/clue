@@ -40,6 +40,7 @@ export class GameService {
     createGame(name: string) {
         console.log("name", name)
         let full = false;
+		let isChoosingSuggestion = false; 
         // if (playersToPlay === 1) {
         //     full = true
         // }
@@ -54,6 +55,11 @@ export class GameService {
                 name : "",
 				room : "", 
                 weapon: "",
+			isChoosingSuggestion: isChoosingSuggestion,
+			suggestedChar: "",
+			suggestedRoom: "",
+			suggestedWeapon: "",
+			cardToShow: ""
             },
         })
     }
@@ -114,6 +120,7 @@ export class GameService {
     }
 
     addCard(game, name, card) {
+	
         let players = game.players
         players.forEach((player) => {
             if (player.name === name) {
@@ -121,7 +128,13 @@ export class GameService {
             }
         })
         this.db.collection('games').doc(game.title).update({
-            players
+            players,
+			isChoosingSuggestion: false, 
+			turn: (game.turn + 1) % (game.players.length),
+			suggestedChar: "",
+			suggestedRoom: "",
+			suggestedWeapon: "",
+			cardToShow: card
         })
     }
 
@@ -277,13 +290,16 @@ export class GameService {
             murderer: game.murderer,
             characters: game.characters,
             users: game.users,
-            turn: (game.turn + 1) % (game.players.length)
+            turn: (game.turn + 1) % (game.players.length),
+			isChoosingSuggestion: false,
+			suggestedChar: "",
+			suggestedRoom: "",
+			suggestedWeapon: "",
+			cardToShow: ""
         })
     }
 
-	suggestionChoice(game) { 
-		
-		// set isChoosingSuggestion flag = 1 (true) 
+	suggestionChoice(game, isChoosingSuggestion, suggestedChar, suggestedRoom, suggestedWeapon) { 
 		
 		this.db.collection('games').doc(game.title).set({
 			title: game.title,
@@ -292,7 +308,12 @@ export class GameService {
             murderer: game.murderer,
             characters: game.characters,
             users: game.users,
-            turn: (game.turn + 1) % (game.players.length)
+            turn: (game.turn + 1) % (game.players.length),
+			isChoosingSuggestion: isChoosingSuggestion,		// flag for when other players are showing card for suggestion 
+			//currentPlayerTurn: game.turn,					 the turn of the curr player during Suggestion
+			suggestedChar: suggestedChar, 					// char card during suggestion 
+			suggestedRoom: suggestedRoom, 
+			suggestedWeapon: suggestedWeapon
 		})
 	}
 
