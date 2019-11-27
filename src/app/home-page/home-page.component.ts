@@ -59,6 +59,10 @@ export class HomePageComponent {
   hasSuggested = false
   hasAccused = false
 
+  characters = [_.PROFESSOR_PLUM, _.MISS_SCARLET, _.COLONEL_MUSTARD, _.MR_BODDY, _.MRS_WHITE, _.MRS_PEACOCK]
+  rooms = [_.STUDY, _.LOUNGE, _.LIBRARY, _.KITCHEN, _.HALL, _.DINING, _.CONSERVATORY];
+  weapons = [_.WRENCH, _.CANDLE_STICK, _.ROPE, _.LEAD_PIPE, _.DAGGER, _.REVOLVER];
+
   constructor(
     private db: AngularFirestore,
     private afAuth: AngularFireAuth,
@@ -473,3 +477,4 @@ export class HomePageComponent {
     }
   }
 }
+
