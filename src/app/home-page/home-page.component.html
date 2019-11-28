@@ -45,7 +45,7 @@
                                     </p>
                                     <button mat-button color="primary" (click)="joinGame(game)">Join Game</button>
                                     <button mat-button color="warn" (click)="closeGame(game)">Close Game</button>
-                                    <!-- <button (click)="initGame()">Click Me!</button> -->
+                                    <!-- <button (click)="getMurder(game)">Click Me!</button> -->
 
                                 </div>
                             </div>
@@ -77,17 +77,86 @@
                                 <div class="flex-row">
                                     <div class="card-panel">
                                         <h4>Cards:</h4>
-                                        <div *ngFor="let card of currentPlayer['cards']">
+                                        <ul style="list-style-type: none; padding-left: 10px;">
+                                            <li>
+                                                <div>
+                                                    <h4>Characters</h4>
+                                                    <div *ngFor="let card of currentPlayer['cards']">
+                                                        <div style="padding-left: 7px;"
+                                                            *ngIf="characters.indexOf(card) !== -1">
+                                                            {{card}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <h4>Weapons</h4>
+                                                    <div *ngFor="let card of currentPlayer['cards']">
+                                                        <div style="padding-left: 7px;"
+                                                            *ngIf="weapons.indexOf(card) !== -1">
+                                                            {{card}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <h4>Rooms</h4>
+                                                    <div *ngFor="let card of currentPlayer['cards']">
+                                                        <div style="padding-left: 7px;"
+                                                            *ngIf="rooms.indexOf(card) !== -1">
+                                                            {{card}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                        </ul>
+                                        <!-- <div *ngFor="let card of currentPlayer['cards']">
                                             <div>{{card}}</div>
-                                        </div>
+                                        </div> -->
                                         <br />
                                         <br />
                                         <h4>Cards learned:</h4>
-                                        <div *ngFor="let card of newCards">
+                                        <ul style="list-style-type: none; padding-left: 10px;">
+                                            <li>
+                                                <div>
+                                                    <h4>Characters</h4>
+                                                    <div *ngFor="let card of newCards">
+                                                        <div style="padding-left: 7px;"
+                                                            *ngIf="characters.indexOf(card) !== -1">
+                                                            {{card}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <h4>Weapons</h4>
+                                                    <div *ngFor="let card of newCards">
+                                                        <div style="padding-left: 7px;"
+                                                            *ngIf="weapons.indexOf(card) !== -1">
+                                                            {{card}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div>
+                                                    <h4>Rooms</h4>
+                                                    <div *ngFor="let card of newCards">
+                                                        <div style="padding-left: 7px;"
+                                                            *ngIf="rooms.indexOf(card) !== -1">
+                                                            {{card}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <!-- <div *ngFor="let card of newCards">
                                             <div>{{card}}</div>
-                                        </div>
-
-
+                                        </div> -->
                                     </div>
                                     <div class="grid">
                                         <div (click)="clickCell('Study')">
