@@ -120,7 +120,7 @@ export class HomePageComponent {
 			this.setPlayerLocations();
 
 /////////////////////////
-			this.banner = `TEST: Other player showed you ${this.selectedCard}` // this.game.turn}`
+		//	this.banner = `TEST: Other player showed you ${this.selectedCard}` // this.game.turn}`
 			
 			
 		//	if(this.selectedSuggestCard !== "") { 
