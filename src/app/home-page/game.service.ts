@@ -299,7 +299,7 @@ export class GameService {
         })
     }
 
-	suggestionChoice(game, isChoosingSuggestion, suggestedChar, suggestedRoom, suggestedWeapon) { 
+	suggestionChoice(game, isChoosingSuggestion, suggestedChar, suggestedRoom, suggestedWeapon, suggestionMaker) { 
 		
 		this.db.collection('games').doc(game.title).set({
 			title: game.title,
@@ -313,7 +313,8 @@ export class GameService {
 			//currentPlayerTurn: game.turn,					 the turn of the curr player during Suggestion
 			suggestedChar: suggestedChar, 					// char card during suggestion 
 			suggestedRoom: suggestedRoom, 
-			suggestedWeapon: suggestedWeapon
+            suggestedWeapon: suggestedWeapon,
+            suggestionMaker : suggestionMaker
 		})
 	}
 

@@ -9,6 +9,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import * as _ from './constants';
 import { MatSelectModule } from '@angular/material/select';
+import { database } from 'firebase';
 
 @Component({
   selector: 'app-home-page',
@@ -64,6 +65,8 @@ export class HomePageComponent {
   suggestedRoom = ""
   suggestedWeapon = "" 
   selectedCard = "" 
+  //
+  suggesterer =""
 
   characters = [_.PROFESSOR_PLUM, _.MISS_SCARLET, _.COLONEL_MUSTARD, _.MR_BODDY, _.MRS_WHITE, _.MRS_PEACOCK]
   rooms = [_.STUDY, _.LOUNGE, _.LIBRARY, _.KITCHEN, _.HALL, _.DINING, _.CONSERVATORY];
@@ -161,7 +164,8 @@ export class HomePageComponent {
   endTurn() {
     this.hasMoved = false;
     this.hasSuggested = false;
-	this.isChoosingSuggestion = false; 
+    this.isChoosingSuggestion = false; 
+    this.banner = "";
     this.gameService.nextTurn(this.game);
   }
 
@@ -381,7 +385,19 @@ export class HomePageComponent {
       return;
     }
 
+    //console.log(this.game.characters)
+    //console.log(this.currentPlayer['character'])
+    
     if (this.selectedRoom !== this.game.characters.find((character) => {
+      this.suggesterer = this.user;
+      console.log(this.suggesterer)
+      //*********Added by Glen*************/
+      // console.log(this.game.title)
+      // this.db.collection('games').doc(this.game.title).update({
+      //   suggestionMaker : this.currentPlayer['character']
+      // }).catch(console.log)
+
+      //***********************************/
       return this.currentPlayer['character'] === character.character;
     }).room) {
       this.banner = 'Can only accuse someone in your room!'
@@ -450,7 +466,7 @@ export class HomePageComponent {
 	// **loop through all players UNTIL someone has a card that was "Suggested" 
 		// flag 
 		this.isChoosingSuggestion = true 
-		this.gameService.suggestionChoice(this.game, this.isChoosingSuggestion, this.suggestedCharacter, this.suggestedRoom, this.suggestedWeapon)
+		this.gameService.suggestionChoice(this.game, this.isChoosingSuggestion, this.suggestedCharacter, this.suggestedRoom, this.suggestedWeapon, this.suggesterer)
 		
 		//this.gameService.addCard(this.game, this.user, this.selectedCharacter)
 		//this.gameService.addCard(this.game, this.user, this.selectedRoom)
@@ -463,21 +479,53 @@ export class HomePageComponent {
   }
 
   addSelectedCard(card) { 
-	
+    /************Glen's Stuff*****************/
+    const result = this.db.firestore.collection('games').doc(this.game.title).get();
+
+    result.then(doc => {
+
+
+      let user = doc.data().suggestionMaker;
+      console.log(user)
+
+      this.endTurn()
+  
+  
+  
+      //let suggesterMaker = this.db.collection('games').doc(this.game.title).ref()
+    
+      //this.banner = `TEST: ${this.whoseTurn}` //`.game.turn}` // 'users[this.]this.game.players[this.game.turn].name}`
+      //return
+      
+      this.selectedCard = card 
+      
+      // add card to original player's deck
+      this.gameService.addCard(this.game, user, card) 
+      
+      this.banner = `Other player showed you ${card}`
+      
+      return
+    }).catch(console.log);
+    /*****************************************/
+
 	// go back to original player first 
-	this.endTurn()
+	// this.endTurn()
+  
+  
+  
+  // //let suggesterMaker = this.db.collection('games').doc(this.game.title).ref()
+
+	// //this.banner = `TEST: ${this.whoseTurn}` //`.game.turn}` // 'users[this.]this.game.players[this.game.turn].name}`
+	// //return
 	
-	//this.banner = `TEST: ${this.whoseTurn}` //`.game.turn}` // 'users[this.]this.game.players[this.game.turn].name}`
-	//return
+	// this.selectedCard = card 
 	
-	this.selectedCard = card 
+	// // add card to original player's deck
+	// this.gameService.addCard(this.game, this.user, card) 
 	
-	// add card to original player's deck
-	this.gameService.addCard(this.game, this.user, card) 
+	// this.banner = `Other player showed you ${card}`
 	
-	this.banner = `Other player showed you ${card}`
-	
-	return
+	// return
   }
 
   addCharCard() { 
