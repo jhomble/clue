@@ -66,7 +66,9 @@ export class HomePageComponent {
   suggestedWeapon = "" 
   selectedCard = "" 
   //
-  suggesterer =""
+  suggesterer = ""
+
+  playersToStart;
 
   characters = [_.PROFESSOR_PLUM, _.MISS_SCARLET, _.COLONEL_MUSTARD, _.MR_BODDY, _.MRS_WHITE, _.MRS_PEACOCK]
   rooms = [_.STUDY, _.LOUNGE, _.LIBRARY, _.KITCHEN, _.HALL, _.DINING, _.CONSERVATORY];
@@ -81,7 +83,7 @@ export class HomePageComponent {
     public playgroundService: PlaygroundService) {
 
     this.message = ""
-    this.gameTitle = ""
+    this.gameTitle = "New Game!"
     this.game = null
     this.games = []
     this.currentlyInGame = false
@@ -91,7 +93,6 @@ export class HomePageComponent {
       this.user = user.email
     })
     this.whoseTurn = ''
-
   }
 
   ngOnInit() {
@@ -158,7 +159,7 @@ export class HomePageComponent {
       return;
     }
     this.banner = "Game Created!"
-    this.gameService.createGame(this.gameTitle)
+    this.gameService.createGame(this.gameTitle, this.playersToStart)
   }
 
   endTurn() {

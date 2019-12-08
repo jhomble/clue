@@ -5,7 +5,7 @@ import { ActionService } from './action.service';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from './constants';
-const playersToPlay = 2
+// const playersToPlay = 2
 
 @Injectable({
     providedIn: 'root'
@@ -37,7 +37,7 @@ export class GameService {
         })
     }
 
-    createGame(name: string) {
+    createGame(name: string, playersToStart: number) {
         console.log("name", name)
         let full = false;
 		let isChoosingSuggestion = false; 
@@ -51,6 +51,7 @@ export class GameService {
             users : [],
             players: [],
             characters: [],
+            playersToStart,
             murderer : {
                 name : "",
 				room : "", 
@@ -66,7 +67,7 @@ export class GameService {
 
     joinGame(game) {
         console.log(game)
-        if (game.players.length >= playersToPlay) {
+        if (game.players.length >= game.playersToStart) {
             alert("Game is Full")
         } else {
             // if (game.players.length >= (playersToPlay - 1)) {
@@ -88,7 +89,7 @@ export class GameService {
                     })
                     console.log(this.user + " added to game!")
 
-                    if (game.users.length + 1 >= playersToPlay)
+                    if (game.users.length + 1 >= game.playersToStart)
                     {
                         this.initGame(game);
                     }

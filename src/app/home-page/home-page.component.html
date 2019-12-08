@@ -59,7 +59,8 @@
 
 
                             <form>
-                                Enter Name of Game: <input type="text" name="fname" [(ngModel)]="gameTitle"><br>
+                                Enter Name of Game: <input class="inpput" type="text" name="fname" [(ngModel)]="gameTitle"><br>
+                                Enter Players To Start: <input class="inpput" type="number" name="fname" [(ngModel)]="playersToStart"><br>
                                 <button mat-button color="primary" type="submit" value="Create a Game"
                                     (click)="createGame()">Create</button>
                             </form>
@@ -285,72 +286,74 @@
 
                             <div *ngIf="currentlyInGame">
                                 <div *ngIf="isMyTurn()" class="flex-col">
-									<div *ngIf="!isSuggesting()"> 
-	                                    <mat-form-field class="selected-murder">
-	                                        <mat-label>Characters</mat-label>
-	                                        <select matNativeControl required [(ngModel)]="selectedCharacter">
-	                                            <option value="None"></option>
-	                                            <option value="Miss Scarlet">Miss Scarlet</option>
-	                                            <option value="Mrs. Peacock">Mrs. Peacock</option>
-	                                            <option value="Professor Plum">Professor Plum</option>
-	                                            <option value="Mr. Boddy">Mr. Boddy</option>
-	                                            <option value="Mrs. White">Mrs. White</option>
-	                                            <option value="Colonel Mustard">Colonel Mustard</option>
-	                                        </select>
-	                                    </mat-form-field>
-									
-	
-	                                    <mat-form-field class="selected-murder">
-	                                        <mat-label>Rooms</mat-label>
-	                                        <select matNativeControl required [(ngModel)]="selectedRoom">
-	                                            <option value="None"></option>
-	                                            <option value="Study">Study</option>
-	                                            <option value="Hall">Hall</option>
-	                                            <option value="Lounge">Lounge</option>
-	                                            <option value="Library">Library</option>
-	                                            <option value="Billiard">Billiard</option>
-	                                            <option value="Dining">Dining</option>
-	                                            <option value="Conservatory">Conservatory</option>
-	                                            <option value="Ballroom">Ballroom</option>
-	                                            <option value="Kitchen">Kitchen</option>
-	                                        </select>
-	                                    </mat-form-field>
-	
-	                                    <mat-form-field class="selected-murder">
-	                                        <mat-label>Weapons</mat-label>
-	                                        <select matNativeControl required [(ngModel)]="selectedWeapon">
-	                                            <option value="None"></option>
-	                                            <option value="Wrench">Wrench</option>
-	                                            <option value="Candle Stick">Candle Stick</option>
-	                                            <option value="Rope">Rope</option>
-	                                            <option value="Lead Pipe">Lead Pipe</option>
-	                                            <option value="Dagger">Dagger</option>
-	                                            <option value="Revolver">Revolver</option>
-	                                        </select>
-	                                    </mat-form-field>
-									</div>
+                                    <div *ngIf="!isSuggesting()">
+                                        <mat-form-field class="selected-murder">
+                                            <mat-label>Characters</mat-label>
+                                            <select matNativeControl required [(ngModel)]="selectedCharacter">
+                                                <option value="None"></option>
+                                                <option value="Miss Scarlet">Miss Scarlet</option>
+                                                <option value="Mrs. Peacock">Mrs. Peacock</option>
+                                                <option value="Professor Plum">Professor Plum</option>
+                                                <option value="Mr. Boddy">Mr. Boddy</option>
+                                                <option value="Mrs. White">Mrs. White</option>
+                                                <option value="Colonel Mustard">Colonel Mustard</option>
+                                            </select>
+                                        </mat-form-field>
+
+
+                                        <mat-form-field class="selected-murder">
+                                            <mat-label>Rooms</mat-label>
+                                            <select matNativeControl required [(ngModel)]="selectedRoom">
+                                                <option value="None"></option>
+                                                <option value="Study">Study</option>
+                                                <option value="Hall">Hall</option>
+                                                <option value="Lounge">Lounge</option>
+                                                <option value="Library">Library</option>
+                                                <option value="Billiard">Billiard</option>
+                                                <option value="Dining">Dining</option>
+                                                <option value="Conservatory">Conservatory</option>
+                                                <option value="Ballroom">Ballroom</option>
+                                                <option value="Kitchen">Kitchen</option>
+                                            </select>
+                                        </mat-form-field>
+
+                                        <mat-form-field class="selected-murder">
+                                            <mat-label>Weapons</mat-label>
+                                            <select matNativeControl required [(ngModel)]="selectedWeapon">
+                                                <option value="None"></option>
+                                                <option value="Wrench">Wrench</option>
+                                                <option value="Candle Stick">Candle Stick</option>
+                                                <option value="Rope">Rope</option>
+                                                <option value="Lead Pipe">Lead Pipe</option>
+                                                <option value="Dagger">Dagger</option>
+                                                <option value="Revolver">Revolver</option>
+                                            </select>
+                                        </mat-form-field>
+                                    </div>
 
                                     <div>
-                                        <div *ngIf="isInRoom() && !isSuggesting()"> <!-- AND is not choosing a card to show --> 
-                                            <button *ngIf="!hasSuggested" class="selected-murder" mat-button color="primary"
-                                                (click)="makeSuggestion()">Make Suggestion
-											</button>
+                                        <div *ngIf="isInRoom() && !isSuggesting()">
+                                            <!-- AND is not choosing a card to show -->
+                                            <button *ngIf="!hasSuggested" class="selected-murder" mat-button
+                                                color="primary" (click)="makeSuggestion()">Make Suggestion
+                                            </button>
                                             <button class="selected-murder" mat-button color="primary"
                                                 (click)="makeAccusation()">Make Accusation
-											</button>
+                                            </button>
                                         </div>
 
-										<div *ngIf="isSuggesting()"> 
-											<!--<p>	suggestedCharacter !== '' || suggestedRoom !== '' || suggestedWeapon !== ''"> </p>
+                                        <div *ngIf="isSuggesting()">
+                                            <!--<p>	suggestedCharacter !== '' || suggestedRoom !== '' || suggestedWeapon !== ''"> </p>
 											<p>char - {{suggestedCharacter}} room - {{suggestedRoom}} weapon - {{suggestedWeapon}} </p>
-											--> 
-											<button *ngIf="getCharCard() !== ''" class="selected-murder" mat-button color="primary"
-	                                            (click)="addCharCard()">Show {{getCharCard()}}</button>
-											<button *ngIf="getRoomCard() !== ''" class="selected-murder" mat-button color="primary"
-	                                            (click)="addRoomCard()">Show {{getRoomCard()}}</button>
-											<button *ngIf="getWeaponCard() !== ''" class="selected-murder" mat-button color="primary"
-	                                            (click)="addWeaponCard()">Show {{getWeaponCard()}}</button>
-										</div>
+											-->
+                                            <button *ngIf="getCharCard() !== ''" class="selected-murder" mat-button
+                                                color="primary" (click)="addCharCard()">Show {{getCharCard()}}</button>
+                                            <button *ngIf="getRoomCard() !== ''" class="selected-murder" mat-button
+                                                color="primary" (click)="addRoomCard()">Show {{getRoomCard()}}</button>
+                                            <button *ngIf="getWeaponCard() !== ''" class="selected-murder" mat-button
+                                                color="primary" (click)="addWeaponCard()">Show
+                                                {{getWeaponCard()}}</button>
+                                        </div>
 
                                         <br />
                                         <br />
